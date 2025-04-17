@@ -46,16 +46,6 @@ export default function Index() {
 	const logout = () => {
 		signOut();
 	};
-
-	async function fetchAttributes() {
-		const attributes = await getItem();
-		if (attributes) {
-			return attributes;
-		} else {
-			return [];
-		}
-	}
-
 	return (
 		<>
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>

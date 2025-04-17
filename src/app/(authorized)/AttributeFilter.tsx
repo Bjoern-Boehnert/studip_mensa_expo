@@ -1,7 +1,7 @@
-import { Appbar, Button, IconButton, Text, Tooltip, useTheme } from "react-native-paper";
+import { Appbar, Button, useTheme } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { useAuthSession } from "@/src/providers/AuthProvider";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView } from "react-native";
 import { Attribute } from "@/src/types/types";
 import { useNavigation } from "@react-navigation/native";
 import AttributeFilterList from "@/src/components/filter/AttributeFilterList";

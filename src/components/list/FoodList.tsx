@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { List, Text, useTheme } from "react-native-paper";
 import { View } from "react-native";
 import { FoodItem as FoodItemType, Menu } from "@/src/types/types";
