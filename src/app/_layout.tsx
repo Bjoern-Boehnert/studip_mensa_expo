@@ -1,4 +1,4 @@
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 import { adaptNavigationTheme, MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { useColorScheme } from "react-native";
 import { Colors } from "../constants/Colors";
@@ -37,7 +37,7 @@ function RootLayoutNavigation() {
 		<AuthProvider>
 			<PaperProvider theme={paperTheme}>
 				<ThemeProvider value={paperTheme as any}>
-					<Slot/>
+					<Slot />
 				</ThemeProvider>
 			</PaperProvider>
 		</AuthProvider>

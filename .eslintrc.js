@@ -3,6 +3,7 @@ module.exports = {
 	plugins: ["prettier"],
 	rules: {
 		"prettier/prettier": "warn",
+		"@typescript-eslint/no-unused-vars": "off",
 	},
-	ignores: ["**/.config/"],
+	ignorePatterns: ["**/.config/"],
 };

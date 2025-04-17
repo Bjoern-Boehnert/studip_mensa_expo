@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useAuthSession } from "@/src/providers/AuthProvider";
 import { SafeAreaView } from "react-native";
 import { Attribute } from "@/src/types/types";
-import { getAttributes } from "@/src/hooks/api";
 import { useNavigation } from "@react-navigation/native";
 import AttributeFilterList from "@/src/components/filter/AttributeFilterList";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
@@ -24,16 +23,16 @@ export default function FilterSettingsScreen() {
 	const navigation = useNavigation();
 	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
 
-	async function fetchAttributes() {
-		const attributes = await getItem();
-		if (attributes) {
-			setSelectedAttributes(attributes);
-		}
-	}
-
 	useEffect(() => {
+		async function fetchAttributes() {
+			const attributes = await getItem();
+			if (attributes) {
+				setSelectedAttributes(attributes);
+			}
+		}
+
 		void fetchAttributes();
-	}, []);
+	}, [getItem]);
 
 	useEffect(() => {
 		//Wichtig: Wenn die API immer dieselben Attribute liefern, lesen wir es aus der JSON solange es noch funktioniert ansonsten wie unten fetchen

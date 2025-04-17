@@ -9,22 +9,28 @@ type Props = {
 	onChange: (selected: string[]) => void;
 };
 
-const CheckboxItem = React.memo(
-	({ attributeKey, attribute, selected, onToggle }: {
-		attributeKey: string;
-		attribute: Attribute;
-		selected: boolean;
-		onToggle: (id: string) => void;
-	}) => (
+const CheckboxItem = React.memo(function CheckboxItem({
+	attributeKey,
+	attribute,
+	selected,
+	onToggle,
+}: {
+	attributeKey: string;
+	attribute: Attribute;
+	selected: boolean;
+	onToggle: (id: string) => void;
+}) {
+	return (
 		<Checkbox.Item
 			label={`${attribute.label} (${attribute.code})`}
 			status={selected ? "checked" : "unchecked"}
 			onPress={() => onToggle(attributeKey)}
 			disabled={attribute.inactive}
 		/>
-	)
-);
+	);
+});
 
+CheckboxItem.displayName = "CheckboxItem";
 
 export default function AttributeFilterList({ attributes, selected, onChange }: Props) {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -47,7 +53,6 @@ export default function AttributeFilterList({ attributes, selected, onChange }: 
 		},
 		[selected, onChange],
 	);
-
 
 	return (
 		<View style={{ padding: 16 }}>

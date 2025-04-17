@@ -1,10 +1,10 @@
-import {Redirect, Stack} from 'expo-router';
-import {Text} from 'react-native';
-import {ReactNode} from "react";
+import { Redirect, Stack } from "expo-router";
+import { Text } from "react-native";
+import { ReactNode } from "react";
 import { useAuthSession } from "@/src/providers/AuthProvider";
 
 export default function RootLayout(): ReactNode {
-	const {token, isLoading} = useAuthSession()
+	const { token, isLoading } = useAuthSession();
 
 	if (isLoading) {
 		return <Text>Loading...</Text>;
@@ -17,7 +17,7 @@ export default function RootLayout(): ReactNode {
 	return (
 		<Stack
 			screenOptions={{
-				headerShown: false
+				headerShown: false,
 			}}
 		>
 			<Stack.Screen name="(tabs)" />

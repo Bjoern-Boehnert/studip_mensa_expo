@@ -28,7 +28,7 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
 				clearTimeout(timeoutRef.current);
 			}
 		};
-	}, [date]);
+	}, [date, onChange]);
 
 	const onPrev = () => {
 		setDate((prev) => subDays(prev, 1));

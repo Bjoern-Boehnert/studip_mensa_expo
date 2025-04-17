@@ -1,4 +1,4 @@
-import { Attribute, Attributes, Menu } from "@/src/types/types";
+import { Attributes, Menu } from "@/src/types/types";
 import { fetch } from "expo/fetch";
 
 export const BASEURL = "https://elearning.uni-oldenburg.de/api.php";
@@ -44,4 +44,3 @@ export const getAttributes = async (token: string): Promise<Attributes | null> =
 		return null;
 	}
 };
-

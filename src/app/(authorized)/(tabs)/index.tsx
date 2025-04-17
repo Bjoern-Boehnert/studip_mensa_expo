@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useAuthSession } from "@/src/providers/AuthProvider";
 import { ActivityIndicator, Appbar, Text, useTheme } from "react-native-paper";
@@ -8,8 +8,10 @@ import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 
-function getFilteredItems(menu: Menu, filterItems: string[]) {
-	if (!filterItems || filterItems.length === 0 || menu.menu === false) return menu;
+function getFilteredItems(menu: Menu, filterItems: string[] | null) {
+	if (!filterItems || filterItems.length === 0 || menu.menu === false) {
+		return menu;
+	}
 
 	const filteredMenu: Exclude<Menu["menu"], false> = {};
 
@@ -32,24 +34,26 @@ export default function Index() {
 	const [items, setItems] = useState<Menu | null>(null);
 	const { getItem } = useAsyncStorage<string[]>("attributes");
 
-	const handleDateChange = async (date: Date) => {
-		setItems(null);
-		if (!token?.current) return;
-		const data = await getMenu(token.current, date);
-		if (data && data.menu) {
-			const attributes = await getItem();
+	const handleDateChange = useCallback(
+		async (date: Date) => {
+			setItems(null);
+			if (!token?.current) return;
+			const data = await getMenu(token.current, date);
+			if (data && data.menu) {
+				const attributes = await getItem();
 
-			// Filter anwenden
-			attributes && setItems(getFilteredItems(data, attributes));
-			// setItems(data);
-		} else {
-			setItems({ menu: false } as Menu);
-		}
-	};
+				// Filter anwenden
+				setItems(getFilteredItems(data, attributes));
+			} else {
+				setItems({ menu: false } as Menu);
+			}
+		},
+		[token, getItem],
+	);
 
 	useEffect(() => {
 		void handleDateChange(new Date());
-	}, [token]);
+	}, [handleDateChange]);
 
 	const logout = () => {
 		signOut();
