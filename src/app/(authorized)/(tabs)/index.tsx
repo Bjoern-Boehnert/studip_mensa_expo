@@ -8,26 +8,6 @@ import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 
-function getFilteredItems(menu: Menu, filterItems: string[] | null) {
-	if (!filterItems || filterItems.length === 0 || menu.menu === false) {
-		return menu;
-	}
-
-	const filteredMenu: Exclude<Menu["menu"], false> = {};
-
-	for (const [locationId, stations] of Object.entries(menu.menu)) {
-		filteredMenu[locationId] = {};
-
-		for (const [stationName, foodItems] of Object.entries(stations)) {
-			filteredMenu[locationId][stationName] = foodItems.filter((item) =>
-				item.attributes.some((attr) => filterItems.includes(attr)),
-			);
-		}
-	}
-
-	return { menu: filteredMenu };
-}
-
 export default function Index() {
 	const { signOut, token } = useAuthSession();
 	const { colors } = useTheme();
@@ -40,15 +20,12 @@ export default function Index() {
 			if (!token?.current) return;
 			const data = await getMenu(token.current, date);
 			if (data && data.menu) {
-				const attributes = await getItem();
-
-				// Filter anwenden
-				setItems(getFilteredItems(data, attributes));
+				setItems(data);
 			} else {
 				setItems({ menu: false } as Menu);
 			}
 		},
-		[token, getItem],
+		[token],
 	);
 
 	useEffect(() => {
@@ -59,6 +36,14 @@ export default function Index() {
 		signOut();
 	};
 
+async function fetchAttributes() {
+	const attributes = await getItem();
+	if (attributes) {
+		return attributes;
+	} else {
+		return [];
+	}
+}
 	return (
 		<>
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
@@ -78,7 +63,7 @@ export default function Index() {
 				</View>
 			) : (
 				<ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
-					{items && <FoodList items={items} />}
+					{items && <FoodList items={items } forbiddenAttributes={fetchAttributes} />}
 				</ScrollView>
 			)}
 			<BottomDateBar initialDate={new Date()} onChange={handleDateChange} />

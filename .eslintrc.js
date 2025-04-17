@@ -2,7 +2,7 @@ module.exports = {
 	extends: ["expo", "prettier"],
 	plugins: ["prettier"],
 	rules: {
-		"prettier/prettier": "warn",
+		// "prettier/prettier": "warn",
 		"@typescript-eslint/no-unused-vars": "off",
 	},
 	ignorePatterns: ["**/.config/"],

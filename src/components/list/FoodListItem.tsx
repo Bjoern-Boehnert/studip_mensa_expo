@@ -5,9 +5,10 @@ import { FoodItem as FoodItemType } from "@/src/types/types";
 
 interface Props {
 	foodItem: FoodItemType;
+	forbiddenAttributes: string[];
 }
 
-export const FoodListItem: FC<Props> = ({ foodItem }) => {
+export const FoodListItem: FC<Props> = ({ foodItem, forbiddenAttributes }) => {
 	const { colors } = useTheme();
 
 	return (
@@ -29,7 +30,13 @@ export const FoodListItem: FC<Props> = ({ foodItem }) => {
 						}}
 					>
 						{foodItem.attributes.map((attr: string) => (
-							<Badge style={{ borderRadius: 0, backgroundColor: colors.secondary }} key={attr}>
+							<Badge
+								style={{
+									borderRadius: 0,
+									backgroundColor: forbiddenAttributes.includes(attr) ? colors.error : colors.secondary,
+								}}
+								key={attr}
+							>
 								{attr}
 							</Badge>
 						))}

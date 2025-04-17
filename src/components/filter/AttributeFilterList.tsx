@@ -22,7 +22,7 @@ const CheckboxItem = React.memo(function CheckboxItem({
 }) {
 	return (
 		<Checkbox.Item
-			label={`${attribute.label} (${attribute.code})`}
+			label={`${attribute.label} (${attributeKey})`}
 			status={selected ? "checked" : "unchecked"}
 			onPress={() => onToggle(attributeKey)}
 			disabled={attribute.inactive}
@@ -35,14 +35,14 @@ CheckboxItem.displayName = "CheckboxItem";
 export default function AttributeFilterList({ attributes, selected, onChange }: Props) {
 	const [searchQuery, setSearchQuery] = useState("");
 
-	// Memoize the filtered attributes based on search query
 	const filtered = useMemo(() => {
-		return Object.entries(attributes).filter(([_, attr]) =>
-			attr.label.toLowerCase().includes(searchQuery.toLowerCase()),
+		return Object.entries(attributes).filter(
+			([key, attr]) =>
+				attr.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				key.includes(searchQuery.toLowerCase()),
 		);
 	}, [attributes, searchQuery]);
 
-	// Memoize handleToggle to avoid unnecessary re-renders
 	const handleToggle = useCallback(
 		(id: string) => {
 			if (selected.includes(id)) {
