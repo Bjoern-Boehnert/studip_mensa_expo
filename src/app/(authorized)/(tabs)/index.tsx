@@ -7,7 +7,6 @@ import { FoodList } from "@/src/components/list/FoodList";
 import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
-import AvatarIcon from "react-native-paper/src/components/Avatar/AvatarIcon";
 
 export default function Index() {
 	const { signOut, token, user } = useAuthSession();
@@ -52,11 +51,7 @@ export default function Index() {
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
 				<Appbar.Content title="Mensa" />
 				{user?.avatar.original && (
-					<Avatar.Image
-						size={36}
-						source={{ uri: user.avatar.original }}
-						style={{ marginRight: 10 }}
-					/>
+					<Avatar.Image size={36} source={{ uri: user.avatar.original }} style={{ marginRight: 10 }} />
 				)}
 				<Appbar.Action icon="logout" onPress={logout} />
 			</Appbar.Header>
