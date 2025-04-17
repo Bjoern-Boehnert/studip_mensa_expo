@@ -6,7 +6,7 @@ import { FoodListItem } from "./FoodListItem";
 
 interface Props {
 	items: Menu;
-	forbiddenAttributes: () => Promise<string[]>;
+	filterAttributes: string[];
 }
 
 function getMensaName(locationId: string): string {
@@ -20,17 +20,8 @@ function getMensaName(locationId: string): string {
 	}
 }
 
-export const FoodList: FC<Props> = ({ items, forbiddenAttributes }) => {
+export const FoodList: FC<Props> = ({ items, filterAttributes }) => {
 	const { colors } = useTheme();
-	const [filterAttributes, setFilterAttributes] = useState<string[]>([]);
-
-	useEffect(() => {
-		const load = async () => {
-			setFilterAttributes(await forbiddenAttributes());
-		};
-		load();
-	}, [filterAttributes, forbiddenAttributes]);
-
 	return (
 		<>
 			{Object.entries(items.menu).map(([locationId, stations]: [string, Record<string, FoodItemType[]>]) => (
@@ -51,7 +42,7 @@ export const FoodList: FC<Props> = ({ items, forbiddenAttributes }) => {
 					{Object.entries(stations).map(([stationName, foodItems]: [string, FoodItemType[]]) => (
 						<List.Section key={stationName} title={stationName}>
 							{foodItems.map((food: FoodItemType, index: number) => (
-								<FoodListItem key={`${stationName}-${index}`} foodItem={food} forbiddenAttributes={filterAttributes} />
+								<FoodListItem key={`${stationName}-${index}`} foodItem={food} filterAttributes={filterAttributes} />
 							))}
 						</List.Section>
 					))}

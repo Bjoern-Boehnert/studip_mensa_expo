@@ -5,44 +5,71 @@ import { FoodItem as FoodItemType } from "@/src/types/types";
 
 interface Props {
 	foodItem: FoodItemType;
-	forbiddenAttributes: string[];
+	filterAttributes: string[];
 }
 
-export const FoodListItem: FC<Props> = ({ foodItem, forbiddenAttributes }) => {
+export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 	const { colors } = useTheme();
 
+	const matchingAttributes = foodItem.attributes.filter(attr =>
+		filterAttributes.includes(attr)
+	);
+
 	return (
-		<List.Item
-			title={() => (
-				<View>
-					<Text style={{ fontSize: 16, fontWeight: "500" }}>{foodItem.name}</Text>
-				</View>
-			)}
-			description={() => (
-				<View style={{ marginTop: 8 }}>
-					<Text style={{ color: colors.onSurfaceVariant }}>€{foodItem.price.toFixed(2)}</Text>
-					<View
-						style={{
-							flexDirection: "row",
-							flexWrap: "wrap",
-							gap: 4,
-							marginTop: 4,
-						}}
-					>
-						{foodItem.attributes.map((attr: string) => (
-							<Badge
-								style={{
-									borderRadius: 0,
-									backgroundColor: forbiddenAttributes.includes(attr) ? colors.error : colors.secondary,
-								}}
-								key={attr}
-							>
-								{attr}
-							</Badge>
-						))}
-					</View>
-				</View>
-			)}
-		/>
+		<View
+			style={{
+				flexDirection: "row",
+				alignItems: "flex-start",
+			}}
+		>
+			<View
+				style={{
+					width: 4,
+					backgroundColor: colors.outline,
+					borderRadius: 2,
+					marginVertical: 8,
+					marginLeft: 12,
+					alignSelf: "stretch",
+				}}
+			/>
+			<View style={{ flex: 1 }}>
+				<List.Item
+					title={() => (
+						<Text style={{ fontSize: 16, fontWeight: "600" }}>
+							{foodItem.name}
+						</Text>
+					)}
+					description={() => (
+						<View style={{ marginTop: 8 }}>
+							<Text style={{ color: colors.onSurfaceVariant }}>
+								€{foodItem.price.toFixed(2)}
+							</Text>
+							{matchingAttributes.length > 0 && (
+								<View
+									style={{
+										flexDirection: "row",
+										flexWrap: "wrap",
+										gap: 4,
+										marginTop: 4,
+									}}
+								>
+									{matchingAttributes.map(attr => (
+										<Badge
+											key={attr}
+											style={{
+												borderRadius: 0,
+												backgroundColor: colors.error,
+											}}
+										>
+											{attr}
+										</Badge>
+									))}
+								</View>
+							)}
+						</View>
+					)}
+				/>
+			</View>
+		</View>
 	);
 };

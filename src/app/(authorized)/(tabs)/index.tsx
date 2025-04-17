@@ -12,6 +12,7 @@ export default function Index() {
 	const { signOut, token } = useAuthSession();
 	const { colors } = useTheme();
 	const [items, setItems] = useState<Menu | null>(null);
+	const [filterAttributes, setFilterAttributes] = useState<string[]>([]);
 	const { getItem } = useAsyncStorage<string[]>("attributes");
 
 	const handleDateChange = useCallback(
@@ -29,6 +30,16 @@ export default function Index() {
 	);
 
 	useEffect(() => {
+		const load = async () => {
+			const attributes = await getItem();
+			if (attributes) {
+				setFilterAttributes(attributes);
+			}
+		};
+		void load();
+	}, [filterAttributes, getItem]);
+
+	useEffect(() => {
 		void handleDateChange(new Date());
 	}, [handleDateChange]);
 
@@ -36,14 +47,15 @@ export default function Index() {
 		signOut();
 	};
 
-async function fetchAttributes() {
-	const attributes = await getItem();
-	if (attributes) {
-		return attributes;
-	} else {
-		return [];
+	async function fetchAttributes() {
+		const attributes = await getItem();
+		if (attributes) {
+			return attributes;
+		} else {
+			return [];
+		}
 	}
-}
+
 	return (
 		<>
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
@@ -63,7 +75,7 @@ async function fetchAttributes() {
 				</View>
 			) : (
 				<ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
-					{items && <FoodList items={items } forbiddenAttributes={fetchAttributes} />}
+					{items && <FoodList items={items} filterAttributes={filterAttributes} />}
 				</ScrollView>
 			)}
 			<BottomDateBar initialDate={new Date()} onChange={handleDateChange} />
