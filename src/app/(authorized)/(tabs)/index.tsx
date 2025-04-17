@@ -9,7 +9,7 @@ import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 
 function getFilteredItems(menu: Menu, filterItems: string[]) {
-	if (!filterItems || menu.menu === false) return menu;
+	if (!filterItems || filterItems.length === 0 || menu.menu === false) return menu;
 
 	const filteredMenu: Exclude<Menu["menu"], false> = {};
 
@@ -26,7 +26,6 @@ function getFilteredItems(menu: Menu, filterItems: string[]) {
 	return { menu: filteredMenu };
 }
 
-
 export default function Index() {
 	const { signOut, token } = useAuthSession();
 	const { colors } = useTheme();
@@ -39,8 +38,10 @@ export default function Index() {
 		const data = await getMenu(token.current, date);
 		if (data && data.menu) {
 			const attributes = await getItem();
+
 			// Filter anwenden
 			attributes && setItems(getFilteredItems(data, attributes));
+			// setItems(data);
 		} else {
 			setItems({ menu: false } as Menu);
 		}
@@ -53,7 +54,6 @@ export default function Index() {
 	const logout = () => {
 		signOut();
 	};
-
 
 	return (
 		<>
