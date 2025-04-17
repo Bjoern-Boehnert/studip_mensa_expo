@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useAuthSession } from "@/src/providers/AuthProvider";
-import { ActivityIndicator, Appbar, Text, useTheme } from "react-native-paper";
+import { ActivityIndicator, Appbar, Avatar, Text, useTheme } from "react-native-paper";
 import { Menu } from "@/src/types/types";
 import { FoodList } from "@/src/components/list/FoodList";
 import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
+import AvatarIcon from "react-native-paper/src/components/Avatar/AvatarIcon";
 
 export default function Index() {
-	const { signOut, token } = useAuthSession();
+	const { signOut, token, user } = useAuthSession();
 	const { colors } = useTheme();
 	const [items, setItems] = useState<Menu | null>(null);
 	const [filterAttributes, setFilterAttributes] = useState<string[]>([]);
@@ -50,6 +51,13 @@ export default function Index() {
 		<>
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
 				<Appbar.Content title="Mensa" />
+				{user?.avatar.original && (
+					<Avatar.Image
+						size={36}
+						source={{ uri: user.avatar.original }}
+						style={{ marginRight: 10 }}
+					/>
+				)}
 				<Appbar.Action icon="logout" onPress={logout} />
 			</Appbar.Header>
 

@@ -1,11 +1,26 @@
 import React, { ReactNode, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
-import { useAuthSession } from "@/src/providers/AuthProvider";
+import { useAuthSession, User } from "@/src/providers/AuthProvider";
 import { fetch } from "expo/fetch";
 import { BASEURL } from "@/src/hooks/api";
 
-const tryLogin = async (username: string, password: string) => {
+function transformToUser(apiUser: any): User {
+	return {
+		id: apiUser.user_id,
+		username: apiUser.username,
+		name: {
+			family: apiUser.name.family,
+			given: apiUser.name.given,
+		},
+		email: apiUser.email,
+		avatar: {
+			original: apiUser.avatar_original,
+		},
+	};
+}
+
+const tryLogin = async (username: string, password: string): Promise<any | false> => {
 	try {
 		const auth = btoa(username + ":" + password);
 		const response = await fetch(`${BASEURL}/user`, {
@@ -17,7 +32,10 @@ const tryLogin = async (username: string, password: string) => {
 		if (!response.ok) return false;
 
 		const contentType = response.headers.get("content-type") || "";
-		return contentType.includes("application/json");
+		const isJSON = contentType.includes("application/json");
+		if (!isJSON) return false;
+
+		return await response.json();
 	} catch (error) {
 		return false;
 	}
@@ -35,9 +53,10 @@ export default function Login(): ReactNode {
 	const login = async () => {
 		setLoading(true);
 		setError(false);
-		if (await tryLogin(username, password)) {
+		const data = await tryLogin(username, password);
+		if (data) {
 			const auth = btoa(username + ":" + password);
-			signIn(auth);
+			signIn({ token: auth, user: transformToUser(data) });
 		} else {
 			setError(true);
 		}

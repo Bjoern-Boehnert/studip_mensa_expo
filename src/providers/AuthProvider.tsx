@@ -11,15 +11,35 @@ import {
 	useState,
 } from "react";
 
+export interface User {
+	id: string;
+	username: string;
+	name: {
+		family: string;
+		given: string;
+	};
+	email: string;
+	avatar: {
+		original: string;
+	};
+}
+
+interface AuthState {
+	token: string | null;
+	user: User | null;
+}
+
 const AuthContext = createContext<{
-	signIn: (arg0: string) => void;
+	signIn: (authState: AuthState) => void;
 	signOut: () => void;
 	token: MutableRefObject<string | null> | null;
+	user: User | null;
 	isLoading: boolean;
 }>({
 	signIn: () => null,
 	signOut: () => null,
 	token: null,
+	user: null,
 	isLoading: true,
 });
 
@@ -29,25 +49,42 @@ export function useAuthSession() {
 
 export default function AuthProvider({ children }: { children: ReactNode }): ReactNode {
 	const tokenRef = useRef<string | null>(null);
+	const [user, setUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			const token = await SecureStore.getItemAsync("token");
-			tokenRef.current = token || "";
+			try {
+				const authData = await SecureStore.getItemAsync("authState");
+				if (authData) {
+					const { token, user } = JSON.parse(authData);
+					tokenRef.current = token;
+					setUser(user);
+				} else {
+					tokenRef.current = null;
+					setUser(null);
+				}
+			} catch (error) {
+				console.error("Error loading auth state:", error);
+				tokenRef.current = null;
+				setUser(null);
+			}
 			setIsLoading(false);
 		})();
 	}, []);
 
-	const signIn = useCallback(async (token: string) => {
-		await SecureStore.setItemAsync("token", token);
+	const signIn = useCallback(async ({ token, user }: AuthState) => {
+		const authState = { token, user };
+		await SecureStore.setItemAsync("authState", JSON.stringify(authState));
 		tokenRef.current = token;
+		setUser(user);
 		router.replace("/");
 	}, []);
 
 	const signOut = useCallback(async () => {
-		await SecureStore.deleteItemAsync("token");
+		await SecureStore.deleteItemAsync("authState");
 		tokenRef.current = null;
+		setUser(null);
 		router.replace("/login");
 	}, []);
 
@@ -57,6 +94,7 @@ export default function AuthProvider({ children }: { children: ReactNode }): Rea
 				signIn,
 				signOut,
 				token: tokenRef,
+				user,
 				isLoading,
 			}}
 		>
