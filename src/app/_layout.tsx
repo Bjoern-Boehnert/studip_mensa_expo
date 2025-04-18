@@ -10,6 +10,7 @@ import {
 import merge from "deepmerge";
 import { useLoadAssets } from "@/src/hooks/use-load-assets";
 import AuthProvider from "@/src/providers/AuthProvider";
+import { StatusBar } from "expo-status-bar";
 
 const customDarkTheme = { ...MD3DarkTheme, colors: Colors.dark };
 const customLightTheme = { ...MD3LightTheme, colors: Colors.light };
@@ -32,9 +33,11 @@ function RootLayoutNavigation() {
 	//THEME
 	const colorScheme = useColorScheme();
 	const paperTheme = colorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
+	const isDark = colorScheme === "dark";
 
 	return (
 		<AuthProvider>
+			<StatusBar style={isDark ? "light" : "dark"} />
 			<PaperProvider theme={paperTheme}>
 				<ThemeProvider value={paperTheme as any}>
 					<Slot />

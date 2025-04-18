@@ -8,6 +8,9 @@ import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 
+const date = new Date();
+date.setHours(0, 0, 0, 0);
+
 export default function Index() {
 	const { signOut, token, user } = useAuthSession();
 	const { colors } = useTheme();
@@ -40,8 +43,8 @@ export default function Index() {
 	}, [filterAttributes, getItem]);
 
 	useEffect(() => {
-		void handleDateChange(new Date());
-	}, [handleDateChange]);
+		void handleDateChange(date);
+	}, [date, handleDateChange]);
 
 	const logout = () => {
 		signOut();
@@ -71,7 +74,7 @@ export default function Index() {
 					{items && <FoodList items={items} filterAttributes={filterAttributes} />}
 				</ScrollView>
 			)}
-			<BottomDateBar initialDate={new Date()} onChange={handleDateChange} />
+			<BottomDateBar initialDate={date} onChange={handleDateChange} />
 		</>
 	);
 }
