@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "studip_mensa_app",
+    "name": "StudIP Mensa App",
     "slug": "studip_mensa_app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,8 +11,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#005faf"
+      },
+      "package": "com.bboehnert.studip_mensa_app"
     },
     "plugins": [
       "expo-router"

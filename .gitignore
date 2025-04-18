@@ -39,3 +39,20 @@ app-example
 
 # Idea Ordner
 .idea/
+
+# Android
+android/gradle.properties
+android/app/my-upload-key.keystore
+android/build.gradle
+android/settings.gradle
+
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+*.apk
+*.aab
+*.keystore
+*.dex
+android/.idea/
