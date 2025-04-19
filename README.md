@@ -13,3 +13,8 @@ Eine Expo App für den Abruf der Mensa-Daten der Uni Oldenburg über StudIP(http
 ## Todo
 - Attribute Filterliste Performance verbessern
 - Mal gucken... :)
+
+<img src="docs/images/Screenshot_1745021466.png" width="200" />
+<img src="docs/images/Screenshot_1745021504.png" width="200" />
+<img src="docs/images/Screenshot_1745021513.png" width="200" />
+<img src="docs/images/Screenshot_1745021516.png" width="200" />
