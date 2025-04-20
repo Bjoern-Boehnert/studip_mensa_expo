@@ -1,11 +1,12 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
-import { useAuthSession, User } from "@/src/providers/AuthProvider";
+import { APIUser, useAuthSession, User } from "@/src/providers/AuthProvider";
 import { fetch } from "expo/fetch";
 import { BASEURL } from "@/src/hooks/api";
+import { useMutation } from "@tanstack/react-query";
 
-function transformToUser(apiUser: any): User {
+function transformToUser(apiUser: APIUser): User {
 	return {
 		id: apiUser.user_id,
 		username: apiUser.username,
@@ -20,24 +21,20 @@ function transformToUser(apiUser: any): User {
 	};
 }
 
-const tryLogin = async (username: string, password: string): Promise<any | false> => {
+const loginMutation = async ({ username, password }: { username: string; password: string }) => {
+	const auth = btoa(username + ":" + password);
+	const response = await fetch(`${BASEURL}/user`, {
+		headers: {
+			Authorization: `Basic ${auth}`,
+			Accept: "application/json",
+		},
+	});
+
+	if (!response.ok) throw new Error("Nutzername oder Passwort falsch!");
 	try {
-		const auth = btoa(username + ":" + password);
-		const response = await fetch(`${BASEURL}/user`, {
-			headers: {
-				Authorization: `Basic ${auth}`,
-				Accept: "application/json",
-			},
-		});
-		if (!response.ok) return false;
-
-		const contentType = response.headers.get("content-type") || "";
-		const isJSON = contentType.includes("application/json");
-		if (!isJSON) return false;
-
-		return await response.json();
-	} catch (error) {
-		return false;
+		return (await response.json()) as APIUser;
+	} catch {
+		throw new Error("Antwort konnte nicht verarbeitet werden!");
 	}
 };
 
@@ -46,21 +43,18 @@ export default function Login(): ReactNode {
 	const [showPassword, setShowPassword] = useState(false);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(false);
-	const theme = useTheme();
+	const { colors } = useTheme();
 
-	const login = async () => {
-		setLoading(true);
-		setError(false);
-		const data = await tryLogin(username, password);
-		if (data) {
+	const { isError, isPending, mutate } = useMutation({
+		mutationFn: loginMutation,
+		onSuccess: (data) => {
 			const auth = btoa(username + ":" + password);
 			signIn({ token: auth, user: transformToUser(data) });
-		} else {
-			setError(true);
-		}
-		setLoading(false);
+		},
+	});
+
+	const login = () => {
+		mutate({ username, password });
 	};
 
 	return (
@@ -70,7 +64,7 @@ export default function Login(): ReactNode {
 				justifyContent: "center",
 				alignItems: "center",
 				padding: 16,
-				backgroundColor: theme.colors.background,
+				backgroundColor: colors.background,
 			}}
 		>
 			<Text
@@ -79,7 +73,7 @@ export default function Login(): ReactNode {
 					marginBottom: 8,
 					fontWeight: "bold",
 					textAlign: "center",
-					color: theme.colors.primary,
+					color: colors.primary,
 				}}
 			>
 				StudIP Mensa App
@@ -108,31 +102,31 @@ export default function Login(): ReactNode {
 				}
 			/>
 
-			{error && (
-				<Text style={{ color: theme.colors.error, marginBottom: 16 }}>
-					Login fehlgeschlagen. Bitte überprüfe deine Eingaben.
+			{isError && (
+				<Text style={{ color: colors.error, marginBottom: 16 }}>
+					Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.
 				</Text>
 			)}
 
 			<Button
 				mode="contained"
 				onPress={login}
-				loading={loading}
-				disabled={loading}
 				style={{ width: "100%", borderRadius: 0, marginTop: 16 }}
+				loading={isPending}
+				disabled={isPending}
 			>
 				Login
 			</Button>
 			<Text
 				style={{
 					marginTop: 16,
-					color: theme.colors.onSurfaceVariant,
+					color: colors.onSurfaceVariant,
 					fontSize: 12,
 					textAlign: "center",
 				}}
 			>
 				Login funktioniert nur mit einem Stud.IP-Account der Uni Oldenburg (
-				<Text style={{ color: theme.colors.primary }}>elearning.uni-oldenburg.de</Text>)
+				<Text style={{ color: colors.primary }}>elearning.uni-oldenburg.de</Text>)
 			</Text>
 		</View>
 	);

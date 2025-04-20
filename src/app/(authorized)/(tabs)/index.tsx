@@ -7,30 +7,17 @@ import { FoodList } from "@/src/components/list/FoodList";
 import { getMenu } from "@/src/hooks/api";
 import { BottomDateBar } from "@/src/components/list/BottomDateBar";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
+import { useQuery } from "@tanstack/react-query";
 
-const date = new Date();
-date.setHours(0, 0, 0, 0);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 export default function Index() {
 	const { signOut, token, user } = useAuthSession();
 	const { colors } = useTheme();
-	const [items, setItems] = useState<Menu | null>(null);
+	const [date, setDate] = useState(today);
 	const [filterAttributes, setFilterAttributes] = useState<string[]>([]);
 	const { getItem } = useAsyncStorage<string[]>("attributes");
-
-	const handleDateChange = useCallback(
-		async (date: Date) => {
-			setItems(null);
-			if (!token?.current) return;
-			const data = await getMenu(token.current, date);
-			if (data && data.menu) {
-				setItems(data);
-			} else {
-				setItems({ menu: false } as Menu);
-			}
-		},
-		[token],
-	);
 
 	useEffect(() => {
 		const load = async () => {
@@ -40,15 +27,27 @@ export default function Index() {
 			}
 		};
 		void load();
-	}, [filterAttributes, getItem]);
+	}, [getItem]);
 
-	useEffect(() => {
-		void handleDateChange(date);
-	}, [date, handleDateChange]);
+	const { data: items, isLoading } = useQuery<Menu | null>({
+		queryKey: ["menu", token?.current, date.toISOString()],
+		queryFn: async () => {
+			if (!token?.current) return null;
+			const data = await getMenu(token.current, date);
+			return data?.menu ? data : { menu: false };
+		},
+		enabled: !!token?.current, // Nur ausführen, wenn token verfügbar
+	});
+
+	const handleDateChange = useCallback((newDate: Date) => {
+		newDate.setHours(0, 0, 0, 0);
+		setDate(newDate);
+	}, []);
 
 	const logout = () => {
 		signOut();
 	};
+
 	return (
 		<>
 			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
@@ -59,13 +58,13 @@ export default function Index() {
 				<Appbar.Action icon="logout" onPress={logout} />
 			</Appbar.Header>
 
-			{items === null && (
+			{isLoading && (
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
 					<ActivityIndicator animating size="large" />
 				</View>
 			)}
 
-			{items?.menu === false ? (
+			{!isLoading && items?.menu === false ? (
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
 					<Text style={{ color: colors.error }}>Kein Menü verfügbar</Text>
 				</View>
@@ -74,6 +73,7 @@ export default function Index() {
 					{items && <FoodList items={items} filterAttributes={filterAttributes} />}
 				</ScrollView>
 			)}
+
 			<BottomDateBar initialDate={date} onChange={handleDateChange} />
 		</>
 	);

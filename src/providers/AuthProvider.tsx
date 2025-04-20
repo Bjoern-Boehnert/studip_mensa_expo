@@ -24,6 +24,19 @@ export interface User {
 	};
 }
 
+export interface APIUser {
+	user_id: string;
+	username: string;
+	name: {
+		family: string;
+		given: string;
+		prefix: string;
+		suffix: string;
+	};
+	email: string;
+	avatar_original: string;
+}
+
 interface AuthState {
 	token: string | null;
 	user: User | null;
