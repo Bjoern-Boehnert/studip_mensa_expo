@@ -1,6 +1,6 @@
 import { Appbar, Button, useTheme } from "react-native-paper";
 import React, { useEffect, useState } from "react";
-import { useAuthSession } from "@/src/providers/AuthProvider";
+import { useAuthentication } from "@/src/providers/AuthProvider";
 import { SafeAreaView } from "react-native";
 import { Attribute } from "@/src/types/types";
 import { useNavigation } from "@react-navigation/native";
@@ -19,7 +19,7 @@ export default function FilterSettingsScreen() {
 	const { colors } = useTheme();
 	const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
 	const [attributes, setAttributes] = useState<Record<string, Attribute>>({});
-	const { token } = useAuthSession();
+	const { token } = useAuthentication();
 	const navigation = useNavigation();
 	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
 

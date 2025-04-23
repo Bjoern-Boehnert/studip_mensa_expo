@@ -42,13 +42,15 @@ interface AuthState {
 	user: User | null;
 }
 
-const AuthContext = createContext<{
+interface Props {
 	signIn: (authState: AuthState) => void;
 	signOut: () => void;
 	token: MutableRefObject<string | null> | null;
 	user: User | null;
 	isLoading: boolean;
-}>({
+}
+
+const AuthContext = createContext<Props>({
 	signIn: () => null,
 	signOut: () => null,
 	token: null,
@@ -56,7 +58,7 @@ const AuthContext = createContext<{
 	isLoading: true,
 });
 
-export function useAuthSession() {
+export function useAuthentication() {
 	return useContext(AuthContext);
 }
 
@@ -78,7 +80,6 @@ export default function AuthProvider({ children }: { children: ReactNode }): Rea
 					setUser(null);
 				}
 			} catch (error) {
-				console.error("Error loading auth state:", error);
 				tokenRef.current = null;
 				setUser(null);
 			}

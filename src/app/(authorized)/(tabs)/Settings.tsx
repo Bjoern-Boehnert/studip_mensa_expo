@@ -1,29 +1,14 @@
-import { Appbar, Avatar, Button, Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 import React from "react";
-import { useAuthSession } from "@/src/providers/AuthProvider";
 import { router } from "expo-router";
+import { AppHeader } from "@/src/components/AppHeader";
 
 export default function Settings() {
 	const { colors } = useTheme();
-	const { signOut, user } = useAuthSession();
-
-	const logout = () => {
-		signOut();
-	};
 
 	return (
 		<>
-			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
-				<Appbar.Content title="Einstellungen" />
-				{user?.avatar.original && (
-					<Avatar.Image
-						size={36}
-						source={{ uri: user.avatar.original }}
-						style={{ marginRight: 10 }}
-					/>
-				)}
-				<Appbar.Action icon="logout" onPress={logout} />
-			</Appbar.Header>
+			<AppHeader title="Einstellungen" />
 			<Button mode="outlined" onPress={() => router.push("/AttributeFilter")} style={{ margin: 16 }}>
 				Attribute filtern
 			</Button>

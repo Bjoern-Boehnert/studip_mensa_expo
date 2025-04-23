@@ -1,13 +1,18 @@
 import { Redirect, Stack } from "expo-router";
-import { Text } from "react-native";
-import { ReactNode } from "react";
-import { useAuthSession } from "@/src/providers/AuthProvider";
+import { View } from "react-native";
+import React, { ReactNode } from "react";
+import { useAuthentication } from "@/src/providers/AuthProvider";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function RootLayout(): ReactNode {
-	const { token, isLoading } = useAuthSession();
+	const { token, isLoading } = useAuthentication();
 
 	if (isLoading) {
-		return <Text>Loading...</Text>;
+		return (
+			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<ActivityIndicator animating size="large" />
+			</View>
+		);
 	}
 
 	if (!token?.current) {

@@ -3,7 +3,7 @@ import { render, fireEvent, act } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 import { Text, Button } from "react-native";
 import { router } from "expo-router";
-import AuthProvider, { useAuthSession, User } from "@/src/providers/AuthProvider";
+import AuthProvider, { useAuthentication, User } from "@/src/providers/AuthProvider";
 
 jest.mock("expo-router", () => ({
 	router: {
@@ -26,7 +26,7 @@ const dummyUser: User = {
 };
 
 const TestComponent = () => {
-	const { signIn, signOut, user, token } = useAuthSession();
+	const { signIn, signOut, user, token } = useAuthentication();
 
 	return (
 		<>

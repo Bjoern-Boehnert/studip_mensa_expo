@@ -1,61 +1,14 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
-import { APIUser, useAuthSession, User } from "@/src/providers/AuthProvider";
-import { fetch } from "expo/fetch";
-import { BASEURL } from "@/src/hooks/api";
-import { useMutation } from "@tanstack/react-query";
-
-function transformToUser(apiUser: APIUser): User {
-	return {
-		id: apiUser.user_id,
-		username: apiUser.username,
-		name: {
-			family: apiUser.name.family,
-			given: apiUser.name.given,
-		},
-		email: apiUser.email,
-		avatar: {
-			original: apiUser.avatar_original,
-		},
-	};
-}
-
-const loginMutation = async ({ username, password }: { username: string; password: string }) => {
-	const auth = btoa(username + ":" + password);
-	const response = await fetch(`${BASEURL}/user`, {
-		headers: {
-			Authorization: `Basic ${auth}`,
-			Accept: "application/json",
-		},
-	});
-
-	if (!response.ok) throw new Error("Nutzername oder Passwort falsch!");
-	try {
-		return (await response.json()) as APIUser;
-	} catch {
-		throw new Error("Antwort konnte nicht verarbeitet werden!");
-	}
-};
+import { useLogin } from "@/src/hooks/useLogin";
 
 export default function Login(): ReactNode {
-	const { signIn } = useAuthSession();
 	const [showPassword, setShowPassword] = useState(false);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const { colors } = useTheme();
-
-	const { isError, isPending, mutate } = useMutation({
-		mutationFn: loginMutation,
-		onSuccess: (data) => {
-			const auth = btoa(username + ":" + password);
-			signIn({ token: auth, user: transformToUser(data) });
-		},
-	});
-
-	const login = () => {
-		mutate({ username, password });
-	};
+	const { login, isError, isPending } = useLogin();
 
 	return (
 		<View
@@ -110,7 +63,7 @@ export default function Login(): ReactNode {
 
 			<Button
 				mode="contained"
-				onPress={login}
+				onPress={()=>login({username, password})}
 				style={{ width: "100%", borderRadius: 0, marginTop: 16 }}
 				loading={isPending}
 				disabled={isPending}
