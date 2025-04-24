@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { UserResponse, useAuthentication, User } from "../providers/AuthProvider";
+import { useAuthentication } from "../providers/AuthProvider";
 import { getUser } from "./api/api";
+import { User, UserResponse } from "@/src/types/types";
 
 function transformToUser(apiUser: UserResponse): User {
 	return {
@@ -24,16 +25,18 @@ export const useLogin = () => {
 
 	const onLogin = async ({ username, password }: LoginCredentials) => {
 		const auth = btoa(`${username}:${password}`);
-		const user = await getUser(auth);
-		if (!user) throw new Error("Login fehlgeschlagen");
-		return { auth, user };
+		try {
+			const user = await getUser(auth);
+			return { auth, user };
+		}catch (e) {
+			throw new Error("Benutzername oder Passwort falsch.");
+		}
 	};
 
 	const mutation = useMutation({
 		mutationFn: onLogin,
 		onSuccess: ({ auth, user }) => {
-
-			signIn({ token: auth, user: transformToUser(user) });
+			signIn({ token: auth, user: transformToUser(user as UserResponse) });
 		},
 	});
 

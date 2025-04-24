@@ -26,7 +26,7 @@ export default function Schedule() {
 				</View>
 			)}
 
-			{!isLoading && data !== null && data && <LecturePlan items={data.collection} />}
+			{!isLoading && data && <LecturePlan items={data.collection} />}
 		</>
 	);
 }

@@ -15,5 +15,5 @@ export const getUser = (token: string): Promise<UserResponse | null> => {
 };
 
 export const getLectures = (token: string, userId: string): Promise<LectureResponse | null> => {
-	return fetchAPI<LectureResponse>(`users/${userId}/events`, token);
+	return fetchAPI<LectureResponse>(`user/${userId}/events`, token);
 };

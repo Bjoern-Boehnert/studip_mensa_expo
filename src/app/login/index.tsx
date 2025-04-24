@@ -8,7 +8,7 @@ export default function Login(): ReactNode {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const { colors } = useTheme();
-	const { login, isError, isPending } = useLogin();
+	const { login, isError, isPending, error } = useLogin();
 
 	return (
 		<View
@@ -56,9 +56,7 @@ export default function Login(): ReactNode {
 			/>
 
 			{isError && (
-				<Text variant="bodyMedium" style={{ color: colors.error, marginBottom: 16 }}>
-					Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.
-				</Text>
+				<Text variant="bodyMedium" style={{ color: colors.error }}>{error.message}</Text>
 			)}
 
 			<Button

@@ -3,7 +3,8 @@ import { render, fireEvent, act } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 import { Text, Button } from "react-native";
 import { router } from "expo-router";
-import AuthProvider, { useAuthentication, User } from "@/src/providers/AuthProvider";
+import AuthProvider, { useAuthentication } from "@/src/providers/AuthProvider";
+import { User } from "@/src/types/types";
 
 jest.mock("expo-router", () => ({
 	router: {
