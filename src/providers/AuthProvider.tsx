@@ -10,32 +10,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-
-export interface User {
-	id: string;
-	username: string;
-	name: {
-		family: string;
-		given: string;
-	};
-	email: string;
-	avatar: {
-		original: string;
-	};
-}
-
-export interface APIUser {
-	user_id: string;
-	username: string;
-	name: {
-		family: string;
-		given: string;
-		prefix: string;
-		suffix: string;
-	};
-	email: string;
-	avatar_original: string;
-}
+import { User } from "@/src/types/types";
 
 interface AuthState {
 	token: string | null;

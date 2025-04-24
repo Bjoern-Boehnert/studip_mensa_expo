@@ -15,9 +15,9 @@ export const AppHeader: FC<Props> = ({ title }) => {
 
 	return (
 		<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
-			<Appbar.Content title={title} />
+			<Appbar.Content titleStyle={{ color: colors.onPrimaryContainer }} title={title} />
 			<Avatar.Image size={36} source={{ uri: user.avatar.original }} style={{ marginRight: 10 }} />
-			<Appbar.Action icon="logout" onPress={signOut} />
+			<Appbar.Action color={colors.onPrimaryContainer} style={{ margin: 5 }} icon="logout" onPress={signOut} />
 		</Appbar.Header>
 	);
 };

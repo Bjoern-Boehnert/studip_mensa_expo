@@ -56,7 +56,7 @@ export default function Login(): ReactNode {
 			/>
 
 			{isError && (
-				<Text style={{ color: colors.error, marginBottom: 16 }}>
+				<Text variant="bodyMedium" style={{ color: colors.error, marginBottom: 16 }}>
 					Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.
 				</Text>
 			)}
@@ -71,10 +71,10 @@ export default function Login(): ReactNode {
 				Login
 			</Button>
 			<Text
+				variant="bodySmall"
 				style={{
 					marginTop: 16,
 					color: colors.onSurfaceVariant,
-					fontSize: 12,
 					textAlign: "center",
 				}}
 			>

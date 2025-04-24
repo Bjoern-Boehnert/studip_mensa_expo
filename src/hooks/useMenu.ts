@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMenu } from "./api";
-import { Menu } from "../types/types";
+import { getMenu } from "./api/api";
+import { MenuResponse } from "../types/types";
 
 export function useMenu(token: string, date: Date) {
 	const dateString = date.toISOString().split("T")[0];
 
-	return useQuery<Menu | null>({
+	return useQuery<MenuResponse | null>({
 		queryKey: ["menu", token, dateString],
 		queryFn: async () => {
-			const data = await getMenu(token, date);
-			return data ?? { menu: false };
+			return await getMenu(token, date);
 		},
 		enabled: !!token,
 	});

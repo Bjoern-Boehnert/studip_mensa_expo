@@ -9,14 +9,14 @@ export default function Settings() {
 	return (
 		<>
 			<AppHeader title="Einstellungen" />
-			<Button mode="outlined" onPress={() => router.push("/AttributeFilter")} style={{ margin: 16 }}>
+			<Button mode="outlined" onPress={() => router.push("/AttributeFilter")} style={{ margin: 16, borderRadius: 0 }}>
 				Attribute filtern
 			</Button>
 			<Text
+				variant="bodySmall"
 				style={{
+					marginHorizontal: 16,
 					color: colors.onSurfaceVariant,
-					fontSize: 12,
-					textAlign: "center",
 				}}
 			>
 				Gerichte mit den ausgewählten Attribute werden rot gekennzeichnet.

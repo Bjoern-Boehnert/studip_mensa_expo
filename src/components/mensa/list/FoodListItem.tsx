@@ -1,4 +1,4 @@
-import { Badge, List, Text, useTheme } from "react-native-paper";
+import { Chip, List, Text, useTheme } from "react-native-paper";
 import { View } from "react-native";
 import React, { FC } from "react";
 import { FoodItem as FoodItemType } from "@/src/types/types";
@@ -11,9 +11,7 @@ interface Props {
 export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 	const { colors } = useTheme();
 
-	const matchingAttributes = foodItem.attributes.filter(attr =>
-		filterAttributes.includes(attr)
-	);
+	const matchingAttributes = foodItem.attributes.filter((attr) => filterAttributes.includes(attr));
 
 	return (
 		<View
@@ -34,14 +32,10 @@ export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 			/>
 			<View style={{ flex: 1 }}>
 				<List.Item
-					title={() => (
-						<Text style={{ fontSize: 16, fontWeight: "600" }}>
-							{foodItem.name}
-						</Text>
-					)}
+					title={() => <Text variant="bodyLarge">{foodItem.name}</Text>}
 					description={() => (
 						<View style={{ marginTop: 8 }}>
-							<Text style={{ color: colors.onSurfaceVariant }}>
+							<Text variant="bodyMedium" style={{ color: colors.onSurfaceVariant }}>
 								€{foodItem.price.toFixed(2)}
 							</Text>
 							{matchingAttributes.length > 0 && (
@@ -53,16 +47,19 @@ export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 										marginTop: 4,
 									}}
 								>
-									{matchingAttributes.map(attr => (
-										<Badge
-											key={attr}
+									{matchingAttributes.map((attr) => (
+										<Text
+											variant="bodyMedium"
 											style={{
-												borderRadius: 0,
-												backgroundColor: colors.error,
+												backgroundColor: colors.errorContainer,
+												color: colors.onErrorContainer,
+												padding: 2,
+												borderRadius: 4,
+												fontWeight: "bold",
 											}}
 										>
 											{attr}
-										</Badge>
+										</Text>
 									))}
 								</View>
 							)}

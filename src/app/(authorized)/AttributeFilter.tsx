@@ -4,10 +4,10 @@ import { useAuthentication } from "@/src/providers/AuthProvider";
 import { SafeAreaView } from "react-native";
 import { Attribute } from "@/src/types/types";
 import { useNavigation } from "@react-navigation/native";
-import AttributeFilterList from "@/src/components/filter/AttributeFilterList";
+import AttributeFilterList from "@/src/components/mensa/filter/AttributeFilterList";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 import { router } from "expo-router";
-import attributesData from "@/src/components/filter/attributes.json";
+import attributesData from "@/src/components/mensa/filter/attributes.json";
 
 function orderAlphabetically(attributes: { [key: string]: Attribute }): Record<string, Attribute> {
 	return Object.fromEntries(

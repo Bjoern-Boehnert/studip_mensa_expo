@@ -1,10 +1,13 @@
-import { View, Text } from "react-native";
-import { useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { useTheme, Text } from "react-native-paper";
 
 function getMensaName(locationId: string): { title: string; info: string } {
 	switch (locationId) {
 		case "2":
-			return { title: "Uhlhornsweg", info: "11:30 - 14:15 Uhr (Im Semester).\n11:30 - 14:00 Uhr (Vorlesungsfreie Zeit)." };
+			return {
+				title: "Uhlhornsweg",
+				info: "11:30 - 14:15 Uhr (Im Semester).\n11:30 - 14:00 Uhr (Vorlesungsfreie Zeit).",
+			};
 		case "3":
 			return { title: "Wechloy", info: "11:30 - 14:00 Uhr" };
 		default:
@@ -25,9 +28,8 @@ export const FoodListHeader = ({ locationId }: { locationId: string }) => {
 			}}
 		>
 			<Text
+				variant="titleMedium"
 				style={{
-					fontSize: 20,
-					fontWeight: "bold",
 					color: colors.onPrimary,
 					marginBottom: 4,
 				}}
@@ -35,10 +37,9 @@ export const FoodListHeader = ({ locationId }: { locationId: string }) => {
 				{mensa.title}
 			</Text>
 			<Text
+				variant="bodySmall"
 				style={{
 					color: colors.onPrimary,
-					fontSize: 14,
-					opacity: 0.85,
 				}}
 			>
 				{mensa.info}

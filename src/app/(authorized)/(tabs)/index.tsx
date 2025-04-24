@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { ActivityIndicator, Text, useTheme } from "react-native-paper";
-import { FoodList } from "@/src/components/list/FoodList";
-import { BottomDateBar } from "@/src/components/list/BottomDateBar";
+import { FoodList } from "@/src/components/mensa/list/FoodList";
+import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { AppHeader } from "@/src/components/AppHeader";
 import { useStoredAttributes } from "@/src/hooks/useStoredAttributes";
 import { useMenu } from "@/src/hooks/useMenu";
@@ -37,7 +37,7 @@ export default function Index() {
 
 			{!isLoading && items?.menu === false ? (
 				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-					<Text style={{ color: colors.error }}>Kein Menü verfügbar</Text>
+					<Text variant="bodyLarge" style={{ color: colors.error }}>Kein Menü verfügbar</Text>
 				</View>
 			) : (
 				<ScrollView style={{ flex: 1 }}>{items && <FoodList items={items} filterAttributes={attributes} />}</ScrollView>

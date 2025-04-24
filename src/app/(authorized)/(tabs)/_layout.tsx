@@ -33,6 +33,12 @@ export default function TabLayout(): ReactNode {
 					tabBarLabel: "Einstellungen",
 				}}
 			/>
+			<Tabs.Screen
+				name="Schedule"
+				options={{
+					tabBarLabel: "Stundenplan",
+				}}
+			/>
 		</Tabs>
 	);
 }
