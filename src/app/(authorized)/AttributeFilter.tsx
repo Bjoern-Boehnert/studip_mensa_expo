@@ -1,15 +1,15 @@
-import { Appbar, Button, useTheme } from "react-native-paper";
-import React, { useEffect, useState } from "react";
-import { useAuthentication } from "@/src/providers/AuthProvider";
-import { SafeAreaView } from "react-native";
+import { ActivityIndicator, Appbar, Button, Text, useTheme } from "react-native-paper";
+import React, { useEffect, useMemo, useState } from "react";
+import { SafeAreaView, View } from "react-native";
 import { Attribute } from "@/src/types/types";
 import { useNavigation } from "@react-navigation/native";
 import AttributeFilterList from "@/src/components/mensa/filter/AttributeFilterList";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 import { router } from "expo-router";
-import attributesData from "@/src/components/mensa/filter/attributes.json";
+import { useAttributes } from "@/src/hooks/useAttributes";
+import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
-function orderAlphabetically(attributes: { [key: string]: Attribute }): Record<string, Attribute> {
+function orderAlphabetically(attributes: Record<string, Attribute>): Record<string, Attribute> {
 	return Object.fromEntries(
 		Object.entries(attributes).sort(([, a], [, b]) => a.label.localeCompare(b.label, "de", { sensitivity: "base" })),
 	);
@@ -19,33 +19,33 @@ export default function FilterSettingsScreen() {
 	const { colors } = useTheme();
 	const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
 	const [attributes, setAttributes] = useState<Record<string, Attribute>>({});
-	const { token } = useAuthentication();
+	const { token } = useAuthenticatedSession();
 	const navigation = useNavigation();
 	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
+	const { data: items, isLoading, isError } = useAttributes(token);
 
 	useEffect(() => {
 		async function fetchAttributes() {
-			const attributes = await getItem();
-			if (attributes) {
-				setSelectedAttributes(attributes);
+			const stored = await getItem();
+			if (stored) {
+				setSelectedAttributes(stored);
 			}
 		}
 
 		void fetchAttributes();
 	}, [getItem]);
 
-	useEffect(() => {
-		//Wichtig: Wenn die API immer dieselben Attribute liefern, lesen wir es aus der JSON solange es noch funktioniert ansonsten wie unten fetchen
-		setAttributes(orderAlphabetically(attributesData.attributes));
+	const orderedAttributes = useMemo(() => {
+		return items?.attributes ? orderAlphabetically(items.attributes) : {};
+	}, [items]);
 
-		// if (token?.current) {
-		// 	getAttributes(token.current).then((data) => {
-		// 		if (data?.attributes) {
-		// 			setAttributes(orderAlphabetically(data.attributes));
-		// 		}
-		// 	});
-		// }
-	}, [token]);
+	useEffect(() => {
+		setAttributes(orderedAttributes);
+	}, [attributes, orderedAttributes]);
+
+	const handleSave = () => {
+		setItem(selectedAttributes).then(router.back);
+	};
 
 	return (
 		<>
@@ -55,17 +55,38 @@ export default function FilterSettingsScreen() {
 			</Appbar.Header>
 
 			<SafeAreaView style={{ flex: 0.75 }}>
-				<AttributeFilterList attributes={attributes} selected={selectedAttributes} onChange={setSelectedAttributes} />
-				<Button
-					mode="contained"
-					style={{ marginHorizontal: 16, marginVertical: 32 }}
-					onPress={() => {
-						void setItem(selectedAttributes);
-						router.back();
-					}}
-				>
-					Speichern
-				</Button>
+				{isLoading && (
+					<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+						<ActivityIndicator animating size="large" color={colors.primary} />
+					</View>
+				)}
+
+				{!isLoading && (isError || !items) && (
+					<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+						<Text variant="bodyLarge" style={{ color: colors.error }}>
+							Keine Attribute verfügbar
+						</Text>
+					</View>
+				)}
+
+				{!isLoading && !isError && items && (
+					<>
+						<AttributeFilterList
+							attributes={attributes}
+							selected={selectedAttributes}
+							onChange={setSelectedAttributes}
+						/>
+						<Button
+							mode="contained"
+							style={{ marginHorizontal: 16, marginVertical: 32 }}
+							onPress={handleSave}
+							accessibilityLabel="Filter speichern"
+							disabled={isLoading}
+						>
+							Speichern
+						</Button>
+					</>
+				)}
 			</SafeAreaView>
 		</>
 	);

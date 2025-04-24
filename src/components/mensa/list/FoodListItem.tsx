@@ -47,8 +47,9 @@ export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 										marginTop: 4,
 									}}
 								>
-									{matchingAttributes.map((attr) => (
+									{matchingAttributes.map((attr, index) => (
 										<Text
+											key={`${attr}-${index}`}
 											variant="bodyMedium"
 											style={{
 												backgroundColor: colors.errorContainer,

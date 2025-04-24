@@ -7,6 +7,7 @@ import { AppHeader } from "@/src/components/AppHeader";
 import { useStoredAttributes } from "@/src/hooks/useStoredAttributes";
 import { useMenu } from "@/src/hooks/useMenu";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
+import { useFocusEffect } from "@react-navigation/native";
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
@@ -17,8 +18,15 @@ export default function Index() {
 	const { colors } = useTheme();
 	const [date, setDate] = useState(today);
 
-	const attributes = useStoredAttributes();
+	const { attributes, reloadAttributes } = useStoredAttributes();
 	const { data: items, isLoading } = useMenu(token, date);
+
+	// Attribute neu laden
+	useFocusEffect(
+		useCallback(() => {
+			reloadAttributes();
+		}, [reloadAttributes])
+	);
 
 	const handleDateChange = useCallback((newDate: Date) => {
 		newDate.setHours(0, 0, 0, 0);
