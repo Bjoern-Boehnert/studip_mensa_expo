@@ -5,7 +5,7 @@ import { Attribute } from "@/src/types/types";
 import AttributeFilterList from "@/src/components/mensa/filter/AttributeFilterList";
 import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 import { useRouter } from "expo-router";
-import { useAttributes } from "@/src/hooks/useAttributes";
+import { useAttributes } from "@/src/hooks/mensa/attributes/useAttributes";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { ErrorMessage } from "@/src/components/ErrorMessage";
 

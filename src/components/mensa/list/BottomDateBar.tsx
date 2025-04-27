@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { IconButton, Text, useTheme } from "react-native-paper";
 import { format, addDays, subDays } from "date-fns";
 import { de } from "date-fns/locale";
+import { useDebounce } from "@/src/hooks/useDebounce";
+
 
 interface Props {
 	initialDate: Date;
@@ -12,23 +14,11 @@ interface Props {
 export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
 	const { colors } = useTheme();
 	const [date, setDate] = useState(initialDate);
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const debouncedDate = useDebounce(date, 300);
 
 	useEffect(() => {
-		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current);
-		}
-
-		timeoutRef.current = setTimeout(() => {
-			onChange(date);
-		}, 300);
-
-		return () => {
-			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current);
-			}
-		};
-	}, [date, onChange]);
+		onChange(debouncedDate);
+	}, [debouncedDate, onChange]);
 
 	const onPrev = () => {
 		setDate((prev) => subDays(prev, 1));

@@ -1,6 +1,6 @@
 import React from "react";
 import { AppHeader } from "@/src/components/AppHeader";
-import { useLectures } from "@/src/hooks/useLectures";
+import { useLectures } from "@/src/hooks/lecture/useLectures";
 import { LecturePlan } from "@/src/components/lecture/LecturePlan";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { ErrorMessage } from "@/src/components/ErrorMessage";

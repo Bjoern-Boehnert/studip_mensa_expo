@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 
 function getMensaName(locationId: string): { title: string; info: string } {
@@ -20,30 +20,29 @@ export const FoodListHeader = ({ locationId }: { locationId: string }) => {
 	const mensa = getMensaName(locationId);
 
 	return (
-		<View
-			style={{
-				backgroundColor: colors.primary,
-				padding: 12,
-				marginBottom: 16,
-			}}
-		>
+		<View style={[styles.container, { backgroundColor: colors.primary }]}>
 			<Text
 				variant="titleMedium"
-				style={{
-					color: colors.onPrimary,
-					marginBottom: 4,
-				}}
+				style={[styles.title, { color: colors.onPrimary }]}
 			>
 				{mensa.title}
 			</Text>
 			<Text
 				variant="bodySmall"
-				style={{
-					color: colors.onPrimary,
-				}}
+				style={{ color: colors.onPrimary }}
 			>
 				{mensa.info}
 			</Text>
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		padding: 12,
+		marginBottom: 16,
+	},
+	title: {
+		marginBottom: 4,
+	},
+});

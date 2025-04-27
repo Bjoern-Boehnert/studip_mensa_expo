@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { FlatList, View } from "react-native";
-import { Checkbox, Searchbar } from "react-native-paper";
+import { FlatList, View, StyleSheet } from "react-native";
+import { Checkbox, Searchbar, useTheme } from "react-native-paper";
 import { Attribute } from "@/src/types/types";
 
 type Props = {
@@ -10,11 +10,11 @@ type Props = {
 };
 
 const CheckboxItem = React.memo(function CheckboxItem({
-	attributeKey,
-	attribute,
-	selected,
-	onToggle,
-}: {
+																												attributeKey,
+																												attribute,
+																												selected,
+																												onToggle,
+																											}: {
 	attributeKey: string;
 	attribute: Attribute;
 	selected: boolean;
@@ -34,6 +34,7 @@ const CheckboxItem = React.memo(function CheckboxItem({
 CheckboxItem.displayName = "CheckboxItem";
 
 export default function AttributeFilterList({ attributes, selected, onChange }: Props) {
+	const { colors } = useTheme();
 	const [searchQuery, setSearchQuery] = useState("");
 
 	const filtered = useMemo(() => {
@@ -56,16 +57,16 @@ export default function AttributeFilterList({ attributes, selected, onChange }: 
 	);
 
 	return (
-		<View style={{ padding: 16 }}>
+		<View style={styles.container}>
 			<Searchbar
 				placeholder="Attribut suchen..."
 				onChangeText={setSearchQuery}
 				value={searchQuery}
-				style={{ marginBottom: 8 }}
+				style={[styles.searchbar, { backgroundColor: colors.surfaceVariant }]}
 			/>
 			<FlatList
 				data={filtered}
-				keyExtractor={([key, _]) => key}
+				keyExtractor={([key]) => key}
 				extraData={selected}
 				renderItem={({ item: [attributeKey, attribute] }) => (
 					<CheckboxItem
@@ -79,3 +80,12 @@ export default function AttributeFilterList({ attributes, selected, onChange }: 
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		padding: 16,
+	},
+	searchbar: {
+		marginBottom: 8,
+	},
+});

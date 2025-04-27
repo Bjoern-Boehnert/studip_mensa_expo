@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react";
-import { ScrollView } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
 import { FoodList } from "@/src/components/mensa/list/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { AppHeader } from "@/src/components/AppHeader";
-import { useStoredAttributes } from "@/src/hooks/useStoredAttributes";
-import { useMenu } from "@/src/hooks/useMenu";
+import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
+import { useMenu } from "@/src/hooks/mensa/useMenu";
 import { useFocusEffect } from "@react-navigation/native";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { ErrorMessage } from "@/src/components/ErrorMessage";
@@ -22,20 +22,16 @@ export default function Index() {
 	const { data: items, isLoading } = useMenu(date);
 
 	// Attribute neu laden
-	useFocusEffect(
-		useCallback(() => {
-			reloadAttributes();
-		}, [reloadAttributes]),
-	);
+	useFocusEffect(() => {
+		void reloadAttributes();
+	});
 
 	const renderContent = () => {
 		if (isLoading) {
 			return <LoadingSpinner />;
 		}
-		if (items) {
-			if (items.menu !== false) {
-				return <FoodList items={items} filterAttributes={attributes} />;
-			}
+		if (items && items.menu !== false) {
+			return <FoodList items={items} filterAttributes={attributes} />;
 		}
 		return <ErrorMessage text="Kein Menü verfügbar" />;
 	};
@@ -43,8 +39,14 @@ export default function Index() {
 	return (
 		<>
 			<AppHeader title="Mensa" />
-			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>{renderContent()}</ScrollView>
+			<ScrollView contentContainerStyle={styles.container}>{renderContent()}</ScrollView>
 			<BottomDateBar initialDate={date} onChange={setRawDate} />
 		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flexGrow: 1,
+	},
+});

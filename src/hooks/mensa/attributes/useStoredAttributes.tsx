@@ -1,4 +1,4 @@
-import { useAsyncStorage } from "./useAsyncStorage";
+import { useAsyncStorage } from "../../useAsyncStorage";
 import { useCallback, useEffect, useState } from "react";
 
 export function useStoredAttributes() {

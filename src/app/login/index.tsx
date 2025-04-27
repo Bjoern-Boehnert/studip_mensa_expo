@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
-import { useLogin } from "@/src/hooks/useLogin";
+import { useLogin } from "@/src/hooks/auth/useLogin";
 
 export default function Login(): ReactNode {
 	const [showPassword, setShowPassword] = useState(false);

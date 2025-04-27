@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLectures } from "./api/api";
-import { LectureResponse } from "../types/types";
+import { getLectures } from "../api/api";
+import { LectureResponse } from "../../types/types";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
 export function useLectures() {

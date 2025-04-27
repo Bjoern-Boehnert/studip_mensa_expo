@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { AttributesResponse } from "../types/types";
+import { AttributesResponse } from "../../../types/types";
 import attributesData from "@/src/components/mensa/filter/attributes.json";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 

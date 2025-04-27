@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { useAuthentication } from "../providers/AuthProvider";
-import { getUser } from "./api/api";
+import { useAuthentication } from "../../providers/AuthProvider";
+import { getUser } from "../api/api";
 import { User, UserResponse } from "@/src/types/types";
 
 function transformToUser(apiUser: UserResponse): User {
