@@ -8,8 +8,9 @@ export const fetchAPI = async <T>(url: string, token: string): Promise<T | null>
 			Authorization: `Basic ${token}`,
 			Accept: "application/json",
 		},
-		credentials: "omit" // Wichtig für das Abmelden, weil sonst der Seminar_Session Cookie nicht gelöscht wird
+		credentials: "omit", // Wichtig für das Abmelden, weil sonst der Seminar_Session Cookie nicht gelöscht wird
 	});
+
 	if (!response.ok) {
 		throw new Error(`Serverantwort: ${response.status}`);
 	}

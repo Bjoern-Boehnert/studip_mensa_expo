@@ -6,9 +6,12 @@ import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { ErrorMessage } from "@/src/components/ErrorMessage";
 
 export default function Schedule() {
-	const { data: items, isLoading } = useLectures();
+	const { data: items, isLoading, error, isError } = useLectures();
 
 	const renderContent = () => {
+		if (isError) {
+			return <ErrorMessage text={error.message} />;
+		}
 		if (isLoading) {
 			return <LoadingSpinner />;
 		}

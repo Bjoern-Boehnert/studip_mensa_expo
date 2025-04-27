@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { FoodList } from "@/src/components/mensa/list/FoodList";
+import { FoodList } from "@/src/components/mensa/list/item/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { AppHeader } from "@/src/components/AppHeader";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
@@ -19,7 +19,7 @@ export default function Index() {
 	const [rawDate, setRawDate] = useState(new Date());
 	const date = normalizeDate(rawDate);
 	const { attributes, reloadAttributes } = useStoredAttributes();
-	const { data: items, isLoading } = useMenu(date);
+	const { data: items, isLoading, isError, error } = useMenu(date);
 
 	// Attribute neu laden
 	useFocusEffect(() => {
@@ -27,6 +27,9 @@ export default function Index() {
 	});
 
 	const renderContent = () => {
+		if(isError){
+			return <ErrorMessage text={error.message} />
+		}
 		if (isLoading) {
 			return <LoadingSpinner />;
 		}

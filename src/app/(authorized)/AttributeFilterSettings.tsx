@@ -20,7 +20,7 @@ export default function AttributeFilterSettings() {
 	const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
 	const { back } = useRouter();
 	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
-	const { data: items, isLoading } = useAttributes();
+	const { data: items, isLoading, isError, error } = useAttributes();
 
 	useEffect(() => {
 		const fetchAttributes = async () => {
@@ -42,6 +42,9 @@ export default function AttributeFilterSettings() {
 	}, [selectedAttributes, setItem, back]);
 
 	const renderContent = () => {
+		if (isError) {
+			return <ErrorMessage text={error.message} />;
+		}
 		if (isLoading) {
 			return <LoadingSpinner />;
 		}
