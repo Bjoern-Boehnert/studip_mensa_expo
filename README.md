@@ -8,6 +8,7 @@ Eine Expo App für den Abruf der Mensa-Daten der Uni Oldenburg über StudIP(http
 - Abruf der Mensa Daten zur Anzeige der Mensen (Uhlhornsweg, Wechloy) als Liste
 - Einfache Navigation der Tage
 - Filterung von Attributen der Speisen
+- Liste von anstehenden Terminen.
 - Abmeldung und Löschung des Login Tokens
 
 ## Todo
