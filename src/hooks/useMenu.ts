@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMenu } from "./api/api";
 import { MenuResponse } from "../types/types";
+import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
-export function useMenu(token: string, date: Date) {
+export function useMenu(date: Date) {
+	const { token } = useAuthenticatedSession();
+
 	const dateString = date.toISOString().split("T")[0];
-
 	return useQuery<MenuResponse | null>({
 		queryKey: ["menu", token, dateString],
 		queryFn: async () => {

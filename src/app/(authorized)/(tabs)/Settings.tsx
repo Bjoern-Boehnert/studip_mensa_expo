@@ -9,7 +9,11 @@ export default function Settings() {
 	return (
 		<>
 			<AppHeader title="Einstellungen" />
-			<Button mode="outlined" onPress={() => router.push("/AttributeFilter")} style={{ margin: 16, borderRadius: 0 }}>
+			<Button
+				mode="outlined"
+				onPress={() => router.push("/AttributeFilterSettings")}
+				style={{ margin: 16, borderRadius: 0 }}
+			>
 				Attribute filtern
 			</Button>
 			<Text

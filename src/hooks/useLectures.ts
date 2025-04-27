@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getLectures } from "./api/api";
 import { LectureResponse } from "../types/types";
+import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
-export function useLectures(token: string, userId: string) {
+export function useLectures() {
+	const { token, user } = useAuthenticatedSession();
+
 	return useQuery<LectureResponse | null>({
-		queryKey: ["events", userId, token],
+		queryKey: ["events", user.id, token],
 		queryFn: async () => {
-			return await getLectures(token, userId);
+			return await getLectures(token, user.id);
 		},
-		enabled: !!token,
+		enabled: !!token && !!user.id,
 	});
 }

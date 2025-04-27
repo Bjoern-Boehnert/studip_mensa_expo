@@ -1,14 +1,13 @@
-import React, { FC, useCallback, useState } from "react";
-import { ScrollView, View } from "react-native";
-import { ActivityIndicator, Text, useTheme } from "react-native-paper";
+import React, { useCallback, useState } from "react";
+import { ScrollView } from "react-native";
 import { FoodList } from "@/src/components/mensa/list/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { AppHeader } from "@/src/components/AppHeader";
 import { useStoredAttributes } from "@/src/hooks/useStoredAttributes";
 import { useMenu } from "@/src/hooks/useMenu";
-import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 import { useFocusEffect } from "@react-navigation/native";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
+import { ErrorMessage } from "@/src/components/ErrorMessage";
 
 const normalizeDate = (input: Date) => {
 	const date = new Date(input);
@@ -17,11 +16,10 @@ const normalizeDate = (input: Date) => {
 };
 
 export default function Index() {
-	const { token } = useAuthenticatedSession();
 	const [rawDate, setRawDate] = useState(new Date());
 	const date = normalizeDate(rawDate);
 	const { attributes, reloadAttributes } = useStoredAttributes();
-	const { data: items, isLoading } = useMenu(token, date);
+	const { data: items, isLoading } = useMenu(date);
 
 	// Attribute neu laden
 	useFocusEffect(
@@ -39,7 +37,7 @@ export default function Index() {
 				return <FoodList items={items} filterAttributes={attributes} />;
 			}
 		}
-		return <NoMenuScreen />;
+		return <ErrorMessage text="Kein Menü verfügbar" />;
 	};
 
 	return (
@@ -50,15 +48,3 @@ export default function Index() {
 		</>
 	);
 }
-
-const NoMenuScreen = () => {
-	const { colors } = useTheme();
-
-	return (
-		<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-			<Text variant="bodyLarge" style={{ color: colors.error }}>
-				Kein Menü verfügbar
-			</Text>
-		</View>
-	);
-};

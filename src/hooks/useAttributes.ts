@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAttributes } from "./api/api";
 import { AttributesResponse } from "../types/types";
 import attributesData from "@/src/components/mensa/filter/attributes.json";
+import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
-export function useAttributes(token: string) {
+export function useAttributes() {
+	const { token } = useAuthenticatedSession();
+
 	return useQuery<AttributesResponse | null>({
 		queryKey: ["attributes", token],
 		queryFn: async () => {
