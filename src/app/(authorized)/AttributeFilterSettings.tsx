@@ -7,7 +7,7 @@ import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 import { useRouter } from "expo-router";
 import { useAttributes } from "@/src/hooks/mensa/attributes/useAttributes";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
-import { ErrorMessage } from "@/src/components/ErrorMessage";
+import { InfoMessage } from "@/src/components/InfoMessage";
 
 // Alphabetically order the attributes
 const orderAlphabetically = (attributes: Record<string, Attribute>) =>
@@ -43,13 +43,13 @@ export default function AttributeFilterSettings() {
 
 	const renderContent = () => {
 		if (isError) {
-			return <ErrorMessage text={error.message} />;
+			return <InfoMessage text={error.message} />;
 		}
 		if (isLoading) {
 			return <LoadingSpinner />;
 		}
 		if (!items || !items.attributes) {
-			return <ErrorMessage text="	Keine Attribute verfügbar" />;
+			return <InfoMessage text="	Keine Attribute verfügbar" />;
 		}
 		return (
 			<>

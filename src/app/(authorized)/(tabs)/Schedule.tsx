@@ -2,14 +2,14 @@ import React from "react";
 import { useLectures } from "@/src/hooks/lecture/useLectures";
 import { LecturePlan } from "@/src/components/lecture/LecturePlan";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
-import { ErrorMessage } from "@/src/components/ErrorMessage";
+import { InfoMessage } from "@/src/components/InfoMessage";
 
 export default function Schedule() {
 	const { data: items, isLoading, error, isError } = useLectures();
 
 	const renderContent = () => {
 		if (isError) {
-			return <ErrorMessage text={error.message} />;
+			return <InfoMessage text={error.message} />;
 		}
 		if (isLoading) {
 			return <LoadingSpinner />;
@@ -17,7 +17,7 @@ export default function Schedule() {
 		if (items) {
 			return <LecturePlan items={items.collection} />;
 		}
-		return <ErrorMessage text="Keine Daten" />;
+		return <InfoMessage text="Keine Daten" />;
 	};
 
 	return <>{renderContent()}</>;

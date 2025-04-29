@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getMenu } from "../api/api";
 import { MenuResponse } from "../../types/types";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";

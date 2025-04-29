@@ -6,7 +6,10 @@ import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttri
 import { useMenu } from "@/src/hooks/mensa/useMenu";
 import { useFocusEffect } from "@react-navigation/native";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
-import { ErrorMessage } from "@/src/components/ErrorMessage";
+import { InfoMessage } from "@/src/components/InfoMessage";
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "@/src/components/ErrorFallback";
 
 const normalizeDate = (input: Date) => {
 	const date = new Date(input);
@@ -30,7 +33,7 @@ const MenuContent = ({ date }: { date: Date }) => {
 		);
 	}
 
-	return <ErrorMessage text="Kein Menü verfügbar" />;
+	return <InfoMessage text="Kein Menü verfügbar" />;
 };
 
 export default function Index() {
@@ -39,9 +42,22 @@ export default function Index() {
 
 	return (
 		<>
-			<Suspense fallback={<LoadingSpinner />}>
-				<MenuContent date={date} />
-			</Suspense>
+			<QueryErrorResetBoundary>
+				{({ reset }) => (
+					<ErrorBoundary
+						key={date.toISOString()}
+						onReset={reset}
+						fallbackRender={({ error, resetErrorBoundary }) => (
+							<ErrorFallback onPressRetry={resetErrorBoundary} error={error} />
+						)}
+					>
+						<Suspense fallback={<LoadingSpinner />}>
+							<MenuContent date={date} />
+						</Suspense>
+					</ErrorBoundary>
+				)}
+			</QueryErrorResetBoundary>
+
 			<BottomDateBar initialDate={date} onChange={setRawDate} />
 		</>
 	);
