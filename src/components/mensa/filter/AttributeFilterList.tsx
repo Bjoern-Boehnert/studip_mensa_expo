@@ -22,7 +22,7 @@ const CheckboxItem = React.memo(function CheckboxItem({
 }) {
 	return (
 		<Checkbox.Item
-			labelVariant="bodyLarge"
+			labelVariant="bodyMedium"
 			label={`${attribute.label} (${attributeKey})`}
 			status={selected ? "checked" : "unchecked"}
 			onPress={() => onToggle(attributeKey)}
