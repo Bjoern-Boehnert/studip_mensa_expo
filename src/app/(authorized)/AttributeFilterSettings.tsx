@@ -1,5 +1,5 @@
-import { Appbar, Button, useTheme } from "react-native-paper";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Button } from "react-native-paper";
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Attribute } from "@/src/types/types";
 import AttributeFilterList from "@/src/components/mensa/filter/AttributeFilterList";
@@ -8,6 +8,7 @@ import { useRouter } from "expo-router";
 import { useAttributes } from "@/src/hooks/mensa/attributes/useAttributes";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { InfoMessage } from "@/src/components/InfoMessage";
+import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
 
 // Alphabetically order the attributes
 const orderAlphabetically = (attributes: Record<string, Attribute>) =>
@@ -15,12 +16,11 @@ const orderAlphabetically = (attributes: Record<string, Attribute>) =>
 		Object.entries(attributes).sort(([, a], [, b]) => a.label.localeCompare(b.label, "de", { sensitivity: "base" })),
 	);
 
-export default function AttributeFilterSettings() {
-	const { colors } = useTheme();
+const AttributeFilterSettingsContent = () => {
 	const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
 	const { back } = useRouter();
 	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
-	const { data: items, isLoading, isError, error } = useAttributes();
+	const { data: items, isLoading } = useAttributes();
 
 	useEffect(() => {
 		const fetchAttributes = async () => {
@@ -32,7 +32,6 @@ export default function AttributeFilterSettings() {
 		void fetchAttributes();
 	}, [getItem]);
 
-	// Memoize the ordered attributes list
 	const orderedAttributes = useMemo(() => {
 		return items?.attributes ? orderAlphabetically(items.attributes) : {};
 	}, [items]);
@@ -41,16 +40,7 @@ export default function AttributeFilterSettings() {
 		setItem(selectedAttributes).then(back);
 	}, [selectedAttributes, setItem, back]);
 
-	const renderContent = () => {
-		if (isError) {
-			return <InfoMessage text={error.message} />;
-		}
-		if (isLoading) {
-			return <LoadingSpinner />;
-		}
-		if (!items || !items.attributes) {
-			return <InfoMessage text="	Keine Attribute verfügbar" />;
-		}
+	if (items && items.attributes) {
 		return (
 			<>
 				<AttributeFilterList
@@ -69,16 +59,19 @@ export default function AttributeFilterSettings() {
 				</Button>
 			</>
 		);
-	};
+	}
+	return <InfoMessage text="Keine Attribute verfügbar" />;
+};
 
+export default function AttributeFilterSettings() {
 	return (
-		<>
-			<Appbar.Header style={{ backgroundColor: colors.primaryContainer }}>
-				<Appbar.BackAction onPress={back} />
-				<Appbar.Content title="Filter Einstellungen" />
-			</Appbar.Header>
-			<View style={styles.container}>{renderContent()}</View>
-		</>
+		<ErrorBoundaryWrapper>
+			<Suspense fallback={<LoadingSpinner />}>
+				<View style={styles.container}>
+					<AttributeFilterSettingsContent />
+				</View>
+			</Suspense>
+		</ErrorBoundaryWrapper>
 	);
 }
 
