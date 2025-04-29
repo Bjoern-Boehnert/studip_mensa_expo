@@ -1,48 +1,45 @@
 import { Tabs } from "expo-router";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { AppHeader } from "@/src/components/AppHeader";
 
 export default function TabLayout(): ReactNode {
 	const { colors } = useTheme();
+
 	return (
 		<Tabs
 			screenOptions={{
-				headerShown: false,
 				tabBarLabelPosition: "below-icon",
 				tabBarActiveTintColor: colors.primary,
 				tabBarStyle: {
-					backgroundColor: colors.primaryContainer,
+					backgroundColor: colors.background,
 				},
-				tabBarActiveBackgroundColor: colors.primaryContainer,
-
+				tabBarActiveBackgroundColor: colors.background,
+				header: ({ options, route }) => (
+					<AppHeader title={options.title ?? route.name} />
+				),
 			}}
 		>
 			<Tabs.Screen
 				name="index"
 				options={{
-					tabBarLabel: "Mensa",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="restaurant" color={color} size={size} />
-					),
+					title: "Mensa",
+					tabBarIcon: (props) => <Ionicons name="restaurant" {...props} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="Settings"
 				options={{
-					tabBarLabel: "Einstellungen",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="settings" color={color} size={size} />
-					),
+					title: "Einstellungen",
+					tabBarIcon: (props) => <Ionicons name="settings" {...props} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="Schedule"
 				options={{
-					tabBarLabel: "Stundenplan",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="calendar" color={color} size={size} />
-					),
+					title: "Stundenplan",
+					tabBarIcon: (props) => <Ionicons name="calendar" {...props} />,
 				}}
 			/>
 		</Tabs>

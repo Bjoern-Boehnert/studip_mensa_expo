@@ -1,5 +1,4 @@
 import React from "react";
-import { AppHeader } from "@/src/components/AppHeader";
 import { useLectures } from "@/src/hooks/lecture/useLectures";
 import { LecturePlan } from "@/src/components/lecture/LecturePlan";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
@@ -21,10 +20,5 @@ export default function Schedule() {
 		return <ErrorMessage text="Keine Daten" />;
 	};
 
-	return (
-		<>
-			<AppHeader title="Stundenplan" />
-			{renderContent()}
-		</>
-	);
+	return <>{renderContent()}</>;
 }

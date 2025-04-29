@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { FoodList } from "@/src/components/mensa/list/item/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
-import { AppHeader } from "@/src/components/AppHeader";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
 import { useMenu } from "@/src/hooks/mensa/useMenu";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,34 +14,34 @@ const normalizeDate = (input: Date) => {
 	return date;
 };
 
-export default function Index() {
-	const [rawDate, setRawDate] = useState(new Date());
-	const date = normalizeDate(rawDate);
+const MenuContent = ({ date }: { date: Date }) => {
 	const { attributes, reloadAttributes } = useStoredAttributes();
-	const { data: items, isLoading, isError, error } = useMenu(date);
 
-	// Attribute neu laden
 	useFocusEffect(() => {
 		void reloadAttributes();
 	});
+	const { data: items } = useMenu(date);
 
-	const renderContent = () => {
-		if(isError){
-			return <ErrorMessage text={error.message} />
-		}
-		if (isLoading) {
-			return <LoadingSpinner />;
-		}
-		if (items && items.menu !== false) {
-			return <FoodList items={items} filterAttributes={attributes} />;
-		}
-		return <ErrorMessage text="Kein Menü verfügbar" />;
-	};
+	if (items && items.menu !== false) {
+		return (
+			<ScrollView contentContainerStyle={styles.container}>
+				<FoodList items={items} filterAttributes={attributes} />
+			</ScrollView>
+		);
+	}
+
+	return <ErrorMessage text="Kein Menü verfügbar" />;
+};
+
+export default function Index() {
+	const [rawDate, setRawDate] = useState(new Date());
+	const date = normalizeDate(rawDate);
 
 	return (
 		<>
-			<AppHeader title="Mensa" />
-			<ScrollView contentContainerStyle={styles.container}>{renderContent()}</ScrollView>
+			<Suspense fallback={<LoadingSpinner />}>
+				<MenuContent date={date} />
+			</Suspense>
 			<BottomDateBar initialDate={date} onChange={setRawDate} />
 		</>
 	);
