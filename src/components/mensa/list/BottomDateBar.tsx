@@ -4,7 +4,6 @@ import { Card, IconButton, Text, useTheme } from "react-native-paper";
 import { addDays, format, subDays } from "date-fns";
 import { de } from "date-fns/locale";
 import { useDebounce } from "@/src/hooks/useDebounce";
-import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
 	initialDate: Date;
@@ -25,7 +24,7 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
 	const formattedDate = format(date, "EEE, dd.MM.yyyy", { locale: de });
 
 	return (
-		<View style={[styles.outerContainer, {borderColor: colors.outline}]}>
+		<View style={[styles.outerContainer, { borderColor: colors.outline }]}>
 			<Card mode="outlined" style={[styles.card, { borderColor: colors.outline }]}>
 				<View style={styles.container}>
 					<Text variant="titleSmall" style={{ flex: 1, textAlign: "center" }}>

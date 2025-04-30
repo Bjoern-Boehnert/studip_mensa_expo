@@ -1,22 +1,22 @@
 import React from "react";
 import { Card, Text, useTheme } from "react-native-paper";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { LectureEvent } from "../../types/types";
-import { formatInTimeZone } from "date-fns-tz";
-import { de } from "date-fns/locale";
+import { format } from "date-fns";
+import { getEuropeDate } from "@/src/utils/time";
 
 type Props = {
 	event: LectureEvent;
 };
 
-const toBerlinDate = (unix: number, formatStr: string): string => {
-	return formatInTimeZone(unix * 1000, "Europe/Berlin", formatStr, { locale: de });
+const getTime = (unix: number) => {
+	return format(getEuropeDate(unix), "HH:mm");
 };
 
 export const LectureEventCard: React.FC<Props> = ({ event }) => {
 	const theme = useTheme();
-	const start = toBerlinDate(event.start, "HH:mm");
-	const end = toBerlinDate(event.end, "HH:mm");
+	const start = getTime(event.start);
+	const end = getTime(event.end);
 
 	return (
 		<Card style={[styles.card, { backgroundColor: theme.colors.elevation.level1 }]}>

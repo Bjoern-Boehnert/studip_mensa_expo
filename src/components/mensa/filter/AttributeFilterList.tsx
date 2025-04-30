@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useCallback } from "react";
-import { FlatList, View, StyleSheet } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { Checkbox, Searchbar, useTheme } from "react-native-paper";
 import { Attribute } from "@/src/types/types";
 
@@ -10,11 +10,11 @@ type Props = {
 };
 
 const CheckboxItem = React.memo(function CheckboxItem({
-																												attributeKey,
-																												attribute,
-																												selected,
-																												onToggle,
-																											}: {
+	attributeKey,
+	attribute,
+	selected,
+	onToggle,
+}: {
 	attributeKey: string;
 	attribute: Attribute;
 	selected: boolean;
@@ -40,8 +40,7 @@ export default function AttributeFilterList({ attributes, selected, onChange }: 
 	const filtered = useMemo(() => {
 		return Object.entries(attributes).filter(
 			([key, attr]) =>
-				attr.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				key.includes(searchQuery.toLowerCase()),
+				attr.label.toLowerCase().includes(searchQuery.toLowerCase()) || key.includes(searchQuery.toLowerCase()),
 		);
 	}, [attributes, searchQuery]);
 
