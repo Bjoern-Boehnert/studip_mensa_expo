@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { View } from "react-native";
+import { Linking, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import { useLogin } from "@/src/hooks/auth/useLogin";
 
@@ -69,7 +69,7 @@ export default function Login(): ReactNode {
 				Login
 			</Button>
 			<Text
-				variant="bodySmall"
+				variant="bodyMedium"
 				style={{
 					marginTop: 16,
 					color: colors.onSurfaceVariant,
@@ -77,8 +77,15 @@ export default function Login(): ReactNode {
 				}}
 			>
 				Login funktioniert nur mit einem Stud.IP-Account der Uni Oldenburg (
-				<Text style={{ color: colors.primary }}>elearning.uni-oldenburg.de</Text>)
+				<Text
+					style={{ color: colors.primary }}
+					onPress={() => Linking.openURL('https://elearning.uni-oldenburg.de')}
+				>
+					elearning.uni-oldenburg.de
+				</Text>
+				)
 			</Text>
+
 		</View>
 	);
 }
