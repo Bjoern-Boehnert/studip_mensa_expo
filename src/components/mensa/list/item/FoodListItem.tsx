@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import React, { FC } from "react";
 import { Attribute, FoodItem as FoodItemType } from "../../../../types/types";
 import { FoodDescription } from "./FoodDescription";
+import { decodeHTMLEntities } from "@/src/utils/parse";
 
 interface Props {
 	foodItem: FoodItemType;
@@ -17,7 +18,7 @@ export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 			<View style={[styles.sideBar, { backgroundColor: colors.outline }]} />
 			<View style={styles.content }>
 				<List.Item
-					title={() => <Text variant="bodySmall">{foodItem.name}</Text>}
+					title={() => <Text variant="bodySmall">{decodeHTMLEntities(foodItem.name)}</Text>}
 					description={() => <FoodDescription foodItem={foodItem} filterAttributes={filterAttributes} />}
 				/>
 			</View>
