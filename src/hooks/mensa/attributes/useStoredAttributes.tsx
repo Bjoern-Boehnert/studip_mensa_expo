@@ -1,16 +1,18 @@
 import { useAsyncStorage } from "../../useAsyncStorage";
 import { useCallback, useEffect, useState } from "react";
+import { Attribute } from "@/src/types/types";
 
+type Attributes = [string, Attribute][];
 export function useStoredAttributes() {
-	const [attributes, setAttributes] = useState<string[]>([]);
-	const { getItem, setItem } = useAsyncStorage<string[]>("attributes");
+	const [attributes, setAttributes] = useState<Attributes>([]);
+	const { getItem, setItem } = useAsyncStorage<Attributes>("attributes");
 
 	const load = useCallback(async () => {
 		const stored = await getItem();
 		if (stored) setAttributes(stored);
 	}, [getItem]);
 
-	const update = useCallback((newAttributes: string[]) => {
+	const update = useCallback((newAttributes: Attributes) => {
 		setAttributes(newAttributes);
 	}, []);
 
@@ -20,6 +22,7 @@ export function useStoredAttributes() {
 
 	const clear = () => {
 		setAttributes([]);
+		void setItem([]);
 	};
 
 	useEffect(() => {

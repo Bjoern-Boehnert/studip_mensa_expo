@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { List } from "react-native-paper";
 import { View } from "react-native";
-import { FoodItem as FoodItemType, MenuResponse } from "@/src/types/types";
+import { FoodItem as FoodItemType, MenuResponse, Attribute } from "@/src/types/types";
 import { FoodListItem } from "./FoodListItem";
 import { FoodListHeader } from "@/src/components/mensa/list/FoodListHeader";
 
 interface Props {
 	items: MenuResponse;
-	filterAttributes: string[];
+	filterAttributes: [string, Attribute][];
 }
 
 export const FoodList: FC<Props> = ({ items, filterAttributes }) => {

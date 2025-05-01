@@ -1,4 +1,4 @@
-import { Button, IconButton, Searchbar, useTheme } from "react-native-paper";
+import { Button, Searchbar, useTheme } from "react-native-paper";
 import React, { Suspense, useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Attribute } from "@/src/types/types";
@@ -16,7 +16,7 @@ const orderAlphabetically = (attributes: Record<string, Attribute>) =>
 	);
 
 const AttributeFilterSettingsContent = () => {
-	const { attributes: selectedAttributes, update, save, clear } = useStoredAttributes();
+	const { attributes: selectedAttributes, update, save } = useStoredAttributes();
 	const { back } = useRouter();
 	const { data: items } = useAttributes();
 	const { colors } = useTheme();
@@ -38,30 +38,34 @@ const AttributeFilterSettingsContent = () => {
 		back();
 	}, [save, back]);
 
-	if (items && items.attributes) {
-		return (
-			<>
-				<View style={styles.component}>
-					<View style={[styles.searchContainer, { borderColor: colors.outline }]}>
-						<Searchbar
-							placeholder="Attribut suchen..."
-							onChangeText={setSearchQuery}
-							value={searchQuery}
-							style={[styles.searchbar, { backgroundColor: colors.surfaceVariant }]}
-						/>
-
-					</View>
-					<AttributeFilterList attributes={filtered} selected={selectedAttributes} onChange={update} onClear={clear} />
+	return (
+		<>
+			<View style={styles.component}>
+				<View style={[styles.searchContainer, { borderColor: colors.outline }]}>
+					<Searchbar
+						placeholder="Attribut suchen..."
+						onChangeText={setSearchQuery}
+						value={searchQuery}
+						style={{ backgroundColor: colors.surfaceVariant }}
+					/>
 				</View>
-				<View style={styles.buttonContainer}>
-					<Button mode="contained" style={styles.saveButton} onPress={handleSave}>
-						Speichern
-					</Button>
-				</View>
-			</>
-		);
-	}
-	return <InfoMessage text="Keine Attribute verfügbar" />;
+				{filtered.length > 0 ? (
+					<AttributeFilterList
+						attributes={filtered}
+						selected={selectedAttributes.map(([key]) => key)}
+						onChange={update}
+					/>
+				) : (
+					<InfoMessage text="Keine Suchergebnisse" />
+				)}
+			</View>
+			<View style={styles.buttonContainer}>
+				<Button mode="contained" onPress={handleSave}>
+					Speichern
+				</Button>
+			</View>
+		</>
+	);
 };
 
 export default function AttributeFilterSettings() {
@@ -82,26 +86,18 @@ const styles = StyleSheet.create({
 	},
 	component: {
 		flex: 1,
-		padding: 16,
+		paddingHorizontal: 16,
+		maxHeight: "85%",
+		marginVertical: 16,
 	},
 	searchContainer: {
 		flexDirection: "row",
 		alignItems: "center",
 		marginBottom: 8,
-		paddingBottom: 8,
+		paddingVertical: 8,
 		borderBottomWidth: 1,
 	},
-	searchbar: {
-		flex: 1,
-	},
-	clearButton: {
-		marginLeft: 8,
-	},
 	buttonContainer: {
-		justifyContent: "center",
-	},
-	saveButton: {
 		marginHorizontal: 32,
-		marginVertical: 16,
 	},
 });

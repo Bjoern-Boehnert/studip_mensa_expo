@@ -1,13 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Checkbox, IconButton, List, useTheme } from "react-native-paper";
+import { Checkbox, List, useTheme } from "react-native-paper";
 import { Attribute } from "@/src/types/types";
 
 type Props = {
 	attributes: [string, Attribute][];
 	selected: string[];
-	onChange: (selected: string[]) => void;
-	onClear: () => void;
+	onChange: (selected: [string, Attribute][]) => void;
 };
 
 const CheckboxItem = React.memo(function CheckboxItem({
@@ -33,11 +32,8 @@ const CheckboxItem = React.memo(function CheckboxItem({
 });
 CheckboxItem.displayName = "CheckboxItem";
 
-export default function AttributeFilterList({ attributes, selected, onChange, onClear }: Props) {
-	const { colors } = useTheme();
-
+export default function AttributeFilterList({ attributes, selected, onChange }: Props) {
 	const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
-	const [areAllExpanded, setAreAllExpanded] = useState(false);
 
 	const groupedAttributes = useMemo(() => {
 		const map: Record<string, [string, Attribute][]> = {};
@@ -51,14 +47,19 @@ export default function AttributeFilterList({ attributes, selected, onChange, on
 
 	const handleToggle = useCallback(
 		(id: string) => {
-			if (selected.includes(id)) {
-				onChange(selected.filter((s) => s !== id));
-			} else {
-				onChange([...selected, id]);
-			}
+			const newSelected = selected.includes(id)
+				? selected.filter((s) => s !== id)
+				: [...selected, id];
+
+			const selectedTuples: [string, Attribute][] = attributes.filter(([key]) =>
+				newSelected.includes(key)
+			);
+
+			onChange(selectedTuples);
 		},
-		[selected, onChange],
+		[attributes, selected, onChange],
 	);
+
 
 	const handleAccordionPress = (group: string) => {
 		setExpandedGroups((prev) => {
@@ -72,18 +73,8 @@ export default function AttributeFilterList({ attributes, selected, onChange, on
 		});
 	};
 
-	const toggleAllAccordions = () => {
-		setAreAllExpanded((prev) => {
-			const newExpandedState = !prev;
-			setExpandedGroups(newExpandedState ? new Set(Object.keys(groupedAttributes)) : new Set());
-			return newExpandedState;
-		});
-	};
-
 	return (
 		<View style={styles.container}>
-
-
 			<ScrollView>
 				{Object.entries(groupedAttributes).map(([group, items]) => (
 					<List.Accordion
@@ -104,22 +95,6 @@ export default function AttributeFilterList({ attributes, selected, onChange, on
 					</List.Accordion>
 				))}
 			</ScrollView>
-			<View style={styles.expandAllContainer}>
-				<IconButton
-					icon={areAllExpanded ? "chevron-up" : "chevron-down"}
-					onPress={toggleAllAccordions}
-					iconColor={colors.onPrimary}
-					style={[styles.expandAll, { backgroundColor: colors.primary, borderRadius: 5 }]}
-				/>
-				<IconButton
-
-					icon="close"
-					onPress={onClear}
-					iconColor={colors.onError}
-					style={[styles.expandAll, { backgroundColor: colors.error, borderRadius: 5 }]}
-				/>
-
-			</View>
 		</View>
 	);
 }
@@ -127,13 +102,5 @@ export default function AttributeFilterList({ attributes, selected, onChange, on
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	expandAllContainer: {
-		flexDirection: "row-reverse",
-		alignItems: "flex-end",
-		paddingHorizontal: 8,
-	},
-	expandAll: {
-		gap: 5,
 	},
 });

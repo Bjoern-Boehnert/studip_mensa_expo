@@ -1,12 +1,12 @@
 import { List, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import React, { FC } from "react";
-import { FoodItem as FoodItemType } from "../../../../types/types";
+import { Attribute, FoodItem as FoodItemType } from "../../../../types/types";
 import { FoodDescription } from "./FoodDescription";
 
 interface Props {
 	foodItem: FoodItemType;
-	filterAttributes: string[];
+	filterAttributes: [string, Attribute][];
 }
 
 export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {

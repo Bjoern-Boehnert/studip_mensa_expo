@@ -1,19 +1,20 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { Attribute } from "@/src/types/types";
 
-export const AttributeChips: FC<{ attributes: string[]; filterAttributes: string[] }> = ({
-	attributes,
-	filterAttributes,
-}) => {
+type Props = {
+	attributes: [string, Attribute][];
+};
+
+export const AttributeChips = ({ attributes }: Props) => {
 	const { colors } = useTheme();
-	const matchingAttributes = attributes.filter((attr) => filterAttributes.includes(attr));
 
 	return (
 		<View style={styles.attributeWrapper}>
-			{matchingAttributes.map((attr, index) => (
+			{attributes.map(([key, attr]) => (
 				<Text
-					key={`${attr}-${index}`}
+					key={key}
 					variant="bodySmall"
 					style={[
 						styles.attributeChip,
@@ -23,13 +24,12 @@ export const AttributeChips: FC<{ attributes: string[]; filterAttributes: string
 						},
 					]}
 				>
-					{attr}
+					{attr.label}
 				</Text>
 			))}
 		</View>
 	);
 };
-
 const styles = StyleSheet.create({
 	attributeWrapper: {
 		flexDirection: "row",
