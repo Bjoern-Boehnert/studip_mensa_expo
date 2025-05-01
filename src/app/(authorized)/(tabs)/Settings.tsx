@@ -1,17 +1,15 @@
 import { Button, Text, useTheme } from "react-native-paper";
 import React, { useEffect } from "react";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
 
 export default function Settings() {
 	const { colors } = useTheme();
 	const { attributes, clear, reload } = useStoredAttributes();
-
-	useEffect(() => {
-		void reload();
-	}, [attributes, reload]);
-
+	useFocusEffect(() => {
+		 void reload();
+	});
 	return (
 		<View style={styles.container}>
 			<View>

@@ -1,7 +1,7 @@
 Eine Expo App für den Abruf der Mensa-Daten der Uni Oldenburg über StudIP(https://elearning.uni-oldenburg.de/).
 
 ## Technisch
-- Die Anmeldung erfolgt über HTTP Basic Authentication. Die Login Daten werden verschlüsselt mittels Expo-SecureStore gespeichert.
+- Die Anmeldung erfolgt über HTTP Basic Authentication. Die Login Daten werden verschlüsselt mittels Expo-SecureStore lokal auf dem Gerät gespeichert.
 - Theming ist mit [react-native-paper](https://callstack.github.io/react-native-paper/) realisiert
 
 ## Features
@@ -12,6 +12,4 @@ Eine Expo App für den Abruf der Mensa-Daten der Uni Oldenburg über StudIP(http
 - Abmeldung und Löschung des Login Tokens
 
 ## Todo
-- Mal gucken... :)
-
-<img src="docs/images/Screenshot_1745021516.png" width="200" />
+<img src="docs/demo.gif" width="300" />

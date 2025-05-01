@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { AttributesResponse } from "../../../types/types";
-import attributesData from "@/src/components/mensa/filter/attributes.json";
+import { AttributesResponse } from "@/src/types/types";
+import attributesData from "@/src/hooks/mensa/attributes/attributes.json";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 
 export function useAttributes() {
@@ -12,5 +12,6 @@ export function useAttributes() {
 			// return await getAttributes(token);
 			return attributesData;
 		},
+		staleTime: 10 * 60 * 1000,
 	});
 }

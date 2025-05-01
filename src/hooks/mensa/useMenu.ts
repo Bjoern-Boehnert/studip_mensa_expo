@@ -10,6 +10,7 @@ export function useMenu(date: Date) {
 	return useSuspenseQuery<MenuResponse | null>({
 		queryKey: ["menu", token, dateString],
 		queryFn: queryFn,
+		staleTime: 10 * 60 * 1000,
 	});
 
 	async function queryFn() {

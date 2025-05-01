@@ -1,0 +1,53 @@
+{
+  "collection": [
+    {
+      "event_id": "1",
+      "course": "/api.php/course/1",
+      "start": 1746432000,
+      "end": 1746439200,
+      "title": "Vorlesung X",
+      "description": "",
+      "categories": "Sitzung",
+      "room": "A07 0-030 (Hörsaal G)",
+      "canceled": false
+    },
+    {
+      "event_id": "2",
+      "course": "/api.php/course/2",
+      "start": 1746453600,
+      "end": 1746460800,
+      "title": "Übung X",
+      "description": "Beschreibung der Übung X",
+      "categories": "Sitzung",
+      "room": "A07 0-030 (Hörsaal G)",
+      "canceled": false
+    },
+    {
+      "event_id": "3",
+      "course": "/api.php/course/3",
+      "start": 1746604800,
+      "end": 1746612000,
+      "title": "Vorlesung X",
+      "description": "",
+      "categories": "Sitzung",
+      "room": "W03 1-161",
+      "canceled": false
+    },
+    {
+      "event_id": "4",
+      "course": "/api.php/course/4",
+      "start": 1747036800,
+      "end": 1747044000,
+      "title": "Vorlesung X",
+      "description": "",
+      "categories": "Sitzung",
+      "room": "A07 0-030 (Hörsaal G)",
+      "canceled": true
+    }
+  ],
+  "pagination": {
+    "total": 3,
+    "offset": 0,
+    "limit": 50
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "attributes": {
+    "species-appropriate": {
+      "id": "at",
+      "label": "Fleisch aus artgerechter Tierhaltung",
+      "code": "At",
+      "group": "Zutaten"
+    },
+    "beef": {
+      "id": "r",
+      "label": "Rindfleisch aus artgerechter Tierhaltung",
+      "code": "R",
+      "group": "Zutaten"
+    },
+    "beefgelatin": {
+      "id": "rg",
+      "label": "Rindergelatine",
+      "code": "RG",
+      "group": "Zutaten"
+    },
+    "fish": {
+      "id": "f",
+      "label": "Fisch",
+      "code": "F",
+      "group": "Zutaten"
+    },
+    "lamb": {
+      "id": "l",
+      "label": "Lammfleisch aus artgerechter Tierhaltung",
+      "code": "L",
+      "group": "Zutaten"
+    },
+    "pork": {
+      "id": "s",
+      "label": "Schweinefleisch aus artgerechter Tierhaltung",
+      "code": "S",
+      "group": "Zutaten"
+    },
+    "poultry+": {
+      "id": "g",
+      "label": "Geflügelfleisch aus artgerechter Tierhaltung",
+      "code": "G",
+      "group": "Zutaten"
+    },
+    "poultry": {
+      "id": "gk",
+      "label": "Geflügelfleisch",
+      "code": "GK",
+      "group": "Zutaten"
+    },
+    "vegan": {
+      "id": "v+",
+      "label": "vegan",
+      "code": "V+",
+      "group": "Zutaten"
+    },
+    "vegetarian": {
+      "id": "v",
+      "label": "vegetarisch",
+      "code": "V",
+      "group": "Zutaten"
+    },
+    "wild": {
+      "id": "wk",
+      "label": "Wildfleisch",
+      "code": "WK",
+      "group": "Zutaten"
+    },
+    "egg": {
+      "id": "ei",
+      "label": "Eier",
+      "code": "Ei",
+      "group": "Allergene"
+    },
+    "cashew": {
+      "id": "cn",
+      "label": "Cashewnüsse",
+      "code": "Cn",
+      "group": "Schalenfrüchte"
+    },
+    "peanut": {
+      "id": "en",
+      "label": "Erdnuss",
+      "code": "En",
+      "group": "Schalenfrüchte"
+    },
+    "hazelnut": {
+      "id": "hn",
+      "label": "Haselnüsse",
+      "code": "Hn",
+      "group": "Schalenfrüchte"
+    },
+    "almond": {
+      "id": "ma",
+      "label": "Mandeln",
+      "code": "Ma",
+      "group": "Schalenfrüchte"
+    },
+    "macadamia": {
+      "id": "mn",
+      "label": "Macadamia- oder Queenslandnüsse",
+      "code": "Mn",
+      "group": "Schalenfrüchte"
+    },
+    "brazilnut": {
+      "id": "pa",
+      "label": "Paranüsse",
+      "code": "Pa",
+      "group": "Schalenfrüchte"
+    },
+    "pistachio": {
+      "id": "pi",
+      "label": "Pistazien",
+      "code": "Pi",
+      "group": "Schalenfrüchte"
+    },
+    "pecan": {
+      "id": "pn",
+      "label": "Pecannüsse",
+      "code": "Pn",
+      "group": "Schalenfrüchte"
+    },
+    "walnut": {
+      "id": "wa",
+      "label": "Walnüsse",
+      "code": "Wa",
+      "group": "Schalenfrüchte"
+    },
+    "gluten": {
+      "id": "gl",
+      "label": "glutenhaltiges Getreide",
+      "code": "Gl",
+      "group": "Glutenhaltiges Getreide",
+      "inactive": true
+    },
+    "fish-allergenic": {
+      "id": "fi",
+      "label": "Fisch",
+      "code": "Fi",
+      "group": "Allergene"
+    },
+    "shellfish": {
+      "id": "kr",
+      "label": "Krebstiere",
+      "code": "Kr",
+      "group": "Allergene"
+    },
+    "lactose": {
+      "id": "la",
+      "label": "Milch und Laktose",
+      "code": "La",
+      "group": "Allergene",
+      "inactive": true
+    },
+    "lupine": {
+      "id": "lu",
+      "label": "Lupine",
+      "code": "Lu",
+      "group": "Allergene"
+    },
+    "milk": {
+      "id": "mi",
+      "label": "Milch (einschl. Laktose)",
+      "code": "Mi",
+      "group": "Allergene"
+    },
+    "nuts": {
+      "id": "nu",
+      "label": "Schalenfrüchte (Nüsse)",
+      "code": "Nu",
+      "group": "Allergene",
+      "inactive": true
+    },
+    "sesame": {
+      "id": "se",
+      "label": "Sesam",
+      "code": "Se",
+      "group": "Allergene"
+    },
+    "mustard": {
+      "id": "sf",
+      "label": "Senf",
+      "code": "Sf",
+      "group": "Allergene"
+    },
+    "celery": {
+      "id": "sl",
+      "label": "Sellerie",
+      "code": "Sl",
+      "group": "Allergene"
+    },
+    "soy": {
+      "id": "so",
+      "label": "Soja",
+      "code": "So",
+      "group": "Allergene"
+    },
+    "so2": {
+      "id": "sw",
+      "label": "Schwefeldioxide und Sulfite",
+      "code": "Sw",
+      "group": "Allergene"
+    },
+    "mollusk": {
+      "id": "wt",
+      "label": "Weichtiere",
+      "code": "Wt",
+      "group": "Allergene"
+    },
+    "porkgelatin": {
+      "id": "sg",
+      "label": "Schweinegelatine",
+      "code": "SG",
+      "group": "Zutaten"
+    },
+    "spelt": {
+      "id": "di",
+      "label": "Dinkel",
+      "code": "Di",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "barley": {
+      "id": "ge",
+      "label": "Gerste",
+      "code": "Ge",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "oats": {
+      "id": "ha",
+      "label": "Hafer",
+      "code": "Ha",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "hybrid": {
+      "id": "hy",
+      "label": "Hybridstämme",
+      "code": "Hy",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "kamut": {
+      "id": "ka",
+      "label": "Kamut",
+      "code": "Ka",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "rye": {
+      "id": "ro",
+      "label": "Roggen",
+      "code": "Ro",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "wheat": {
+      "id": "we",
+      "label": "Weizen",
+      "code": "We",
+      "group": "Glutenhaltiges Getreide"
+    },
+    "colorant": {
+      "id": "1",
+      "label": "mit Farbstoff",
+      "code": "1",
+      "group": "Zusatzstoffe"
+    },
+    "preservative": {
+      "id": "2",
+      "label": "mit Konservierungsstoff",
+      "code": "2",
+      "group": "Zusatzstoffe"
+    },
+    "antioxidant": {
+      "id": "3",
+      "label": "mit Antioxidationsmittel",
+      "code": "3",
+      "group": "Zusatzstoffe"
+    },
+    "flavor": {
+      "id": "4",
+      "label": "mit Geschmacksverstärker",
+      "code": "4",
+      "group": "Zusatzstoffe"
+    },
+    "sulfur": {
+      "id": "5",
+      "label": "geschwefelt",
+      "code": "5",
+      "group": "Zusatzstoffe"
+    },
+    "blackened": {
+      "id": "6",
+      "label": "geschwärzt",
+      "code": "6",
+      "group": "Zusatzstoffe"
+    },
+    "waxed": {
+      "id": "7",
+      "label": "gewachst",
+      "code": "7",
+      "group": "Zusatzstoffe"
+    },
+    "sweetened": {
+      "id": "8",
+      "label": "mit Süßungsmitteln",
+      "code": "8",
+      "group": "Zusatzstoffe"
+    },
+    "phe": {
+      "id": "9",
+      "label": "enthält eine Phenylalaninquelle",
+      "code": "9",
+      "group": "Zusatzstoffe"
+    },
+    "phosphate": {
+      "id": "10",
+      "label": "mit Phosphat",
+      "code": "10",
+      "group": "Zusatzstoffe"
+    },
+    "caffeinated": {
+      "id": "11",
+      "label": "koffeinhaltig",
+      "code": "11",
+      "group": "Zusatzstoffe"
+    },
+    "cocoafrosting": {
+      "id": "12",
+      "label": "kakaohaltige Fettglasur",
+      "code": "12",
+      "group": "Zusatzstoffe"
+    },
+    "alochol": {
+      "id": "a",
+      "label": "mit Alkohol",
+      "code": "A",
+      "group": "Zusatzstoffe"
+    },
+    "garlic": {
+      "id": "kn",
+      "label": "mit Knoblauch",
+      "code": "Kn",
+      "group": "Zutaten"
+    },
+    "calf-rennet": {
+      "id": "kl",
+      "label": "Kälberlab",
+      "code": "KL",
+      "group": "Zutaten"
+    }
+  }
+}
