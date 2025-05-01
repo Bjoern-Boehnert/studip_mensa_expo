@@ -3,16 +3,28 @@ import { useCallback, useEffect, useState } from "react";
 
 export function useStoredAttributes() {
 	const [attributes, setAttributes] = useState<string[]>([]);
-	const { getItem } = useAsyncStorage<string[]>("attributes");
+	const { getItem, setItem } = useAsyncStorage<string[]>("attributes");
 
-	const loadAttributes = useCallback(async () => {
+	const load = useCallback(async () => {
 		const stored = await getItem();
 		if (stored) setAttributes(stored);
 	}, [getItem]);
 
-	useEffect(() => {
-		void loadAttributes();
-	}, [loadAttributes]);
+	const update = useCallback((newAttributes: string[]) => {
+		setAttributes(newAttributes);
+	}, []);
 
-	return { attributes, reloadAttributes: loadAttributes };
+	const save = () => {
+		void setItem(attributes);
+	};
+
+	const clear = () => {
+		setAttributes([]);
+	};
+
+	useEffect(() => {
+		void load();
+	}, [load]);
+
+	return { attributes, reload: load, update, save, clear };
 }

@@ -1,62 +1,63 @@
-import { Button } from "react-native-paper";
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Button, IconButton, Searchbar, useTheme } from "react-native-paper";
+import React, { Suspense, useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Attribute } from "@/src/types/types";
 import AttributeFilterList from "@/src/components/mensa/filter/AttributeFilterList";
-import { useAsyncStorage } from "@/src/hooks/useAsyncStorage";
 import { useRouter } from "expo-router";
 import { useAttributes } from "@/src/hooks/mensa/attributes/useAttributes";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { InfoMessage } from "@/src/components/InfoMessage";
 import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
+import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
 
-// Alphabetically order the attributes
 const orderAlphabetically = (attributes: Record<string, Attribute>) =>
 	Object.fromEntries(
 		Object.entries(attributes).sort(([, a], [, b]) => a.label.localeCompare(b.label, "de", { sensitivity: "base" })),
 	);
 
 const AttributeFilterSettingsContent = () => {
-	const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
+	const { attributes: selectedAttributes, update, save, clear } = useStoredAttributes();
 	const { back } = useRouter();
-	const { setItem, getItem } = useAsyncStorage<string[]>("attributes");
-	const { data: items, isLoading } = useAttributes();
-
-	useEffect(() => {
-		const fetchAttributes = async () => {
-			const stored = await getItem();
-			if (stored) {
-				setSelectedAttributes(stored);
-			}
-		};
-		void fetchAttributes();
-	}, [getItem]);
+	const { data: items } = useAttributes();
+	const { colors } = useTheme();
+	const [searchQuery, setSearchQuery] = useState("");
 
 	const orderedAttributes = useMemo(() => {
 		return items?.attributes ? orderAlphabetically(items.attributes) : {};
 	}, [items]);
 
+	const filtered = useMemo(() => {
+		return Object.entries(orderedAttributes).filter(
+			([key, attr]) =>
+				attr.label.toLowerCase().includes(searchQuery.toLowerCase()) || key.includes(searchQuery.toLowerCase()),
+		);
+	}, [orderedAttributes, searchQuery]);
+
 	const handleSave = useCallback(() => {
-		setItem(selectedAttributes).then(back);
-	}, [selectedAttributes, setItem, back]);
+		save();
+		back();
+	}, [save, back]);
 
 	if (items && items.attributes) {
 		return (
 			<>
-				<AttributeFilterList
-					attributes={orderedAttributes}
-					selected={selectedAttributes}
-					onChange={setSelectedAttributes}
-				/>
-				<Button
-					mode="contained"
-					style={styles.saveButton}
-					onPress={handleSave}
-					accessibilityLabel="Filter speichern"
-					disabled={isLoading}
-				>
-					Speichern
-				</Button>
+				<View style={styles.component}>
+					<View style={[styles.searchContainer, { borderColor: colors.outline }]}>
+						<Searchbar
+							placeholder="Attribut suchen..."
+							onChangeText={setSearchQuery}
+							value={searchQuery}
+							style={[styles.searchbar, { backgroundColor: colors.surfaceVariant }]}
+						/>
+
+					</View>
+					<AttributeFilterList attributes={filtered} selected={selectedAttributes} onChange={update} onClear={clear} />
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button mode="contained" style={styles.saveButton} onPress={handleSave}>
+						Speichern
+					</Button>
+				</View>
 			</>
 		);
 	}
@@ -77,10 +78,30 @@ export default function AttributeFilterSettings() {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 0.75,
+		flex: 1,
+	},
+	component: {
+		flex: 1,
+		padding: 16,
+	},
+	searchContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 8,
+		paddingBottom: 8,
+		borderBottomWidth: 1,
+	},
+	searchbar: {
+		flex: 1,
+	},
+	clearButton: {
+		marginLeft: 8,
+	},
+	buttonContainer: {
+		justifyContent: "center",
 	},
 	saveButton: {
-		marginHorizontal: 16,
-		marginVertical: 32,
+		marginHorizontal: 32,
+		marginVertical: 16,
 	},
 });

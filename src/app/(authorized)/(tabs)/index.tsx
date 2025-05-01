@@ -16,7 +16,7 @@ const normalizeDate = (input: Date) => {
 };
 
 const MenuContent = ({ date }: { date: Date }) => {
-	const { attributes, reloadAttributes } = useStoredAttributes();
+	const { attributes, reload: reloadAttributes } = useStoredAttributes();
 
 	useFocusEffect(() => {
 		void reloadAttributes();
