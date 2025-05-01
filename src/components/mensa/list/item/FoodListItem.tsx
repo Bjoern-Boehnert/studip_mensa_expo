@@ -18,7 +18,7 @@ export const FoodListItem: FC<Props> = ({ foodItem, filterAttributes }) => {
 			<View style={[styles.sideBar, { backgroundColor: colors.outline }]} />
 			<View style={styles.content }>
 				<List.Item
-					title={() => <Text variant="bodySmall">{decodeHTMLEntities(foodItem.name)}</Text>}
+					title={() => <Text variant="bodyMedium">{decodeHTMLEntities(foodItem.name)}</Text>}
 					description={() => <FoodDescription foodItem={foodItem} filterAttributes={filterAttributes} />}
 				/>
 			</View>

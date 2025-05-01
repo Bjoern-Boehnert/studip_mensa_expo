@@ -22,7 +22,6 @@ const MenuContent = ({ date }: { date: Date }) => {
 		void reloadAttributes();
 	});
 	const { data: items } = useMenu(date);
-
 	if (items && items.menu !== false) {
 		return (
 			<ScrollView contentContainerStyle={styles.container}>
