@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Text, useTheme } from "react-native-paper";
+import { Card, IconButton, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { LectureEvent } from "../../types/types";
 import { format } from "date-fns";
@@ -20,17 +20,24 @@ export const LectureEventCard: React.FC<Props> = ({ event }) => {
 
 	return (
 		<Card style={[styles.card, { backgroundColor: theme.colors.elevation.level1 }]}>
+			<Card.Title
+				titleNumberOfLines={2}
+				title={event.title}
+				right={(props) => <IconButton {...props} icon="arrow-right" onPress={() => {}} />}
+			/>
 			<Card.Content>
-				<Text variant="bodyMedium" style={styles.title}>
-					{event.title}
-				</Text>
-
 				<View style={styles.row}>
 					<Text variant="bodyLarge">
 						{start} – {end}
 					</Text>
 					<Text variant="bodyLarge">{event.room}</Text>
 				</View>
+
+				<Text variant="bodySmall" style={styles.title}>
+					{event.categories}
+				</Text>
+
+				{event.description && <Text variant="bodySmall">{event.description}</Text>}
 
 				{event.canceled && (
 					<Text variant="bodyMedium" style={[styles.canceledText, { color: theme.colors.onErrorContainer }]}>

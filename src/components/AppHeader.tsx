@@ -24,16 +24,11 @@ export const AppHeader: FC<Props> = ({ title }) => {
 			<Appbar.Action
 				color={colors.onPrimaryContainer}
 				style={styles.action}
-				icon={mode === "dark" ? "weather-sunny" : "weather-night"}
+				icon={mode === "dark" ? "weather-night" : "weather-sunny"}
 				onPress={toggleTheme}
 			/>
 			{user && (
-				<Appbar.Action
-					color={colors.onPrimaryContainer}
-					style={styles.action}
-					icon="logout"
-					onPress={signOut}
-				/>
+				<Appbar.Action color={colors.onPrimaryContainer} style={styles.action} icon="logout" onPress={signOut} />
 			)}
 		</Appbar.Header>
 	);

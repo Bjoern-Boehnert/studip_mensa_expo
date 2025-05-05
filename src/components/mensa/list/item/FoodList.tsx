@@ -1,30 +1,50 @@
-import React, { FC } from "react";
-import { List } from "react-native-paper";
-import { View } from "react-native";
-import { FoodItem as FoodItemType, MenuResponse, Attribute } from "@/src/types/types";
+import React, { useMemo } from "react";
+import { SectionList, StyleSheet } from "react-native";
+import { Text, useTheme } from "react-native-paper";
+import { Attribute, Menu } from "@/src/types/types";
 import { FoodListItem } from "./FoodListItem";
 import { FoodListHeader } from "@/src/components/mensa/list/FoodListHeader";
 
 interface Props {
-	items: MenuResponse;
+	items: Menu;
 	filterAttributes: [string, Attribute][];
 }
 
-export const FoodList: FC<Props> = ({ items, filterAttributes }) => {
+export const FoodList: React.FC<Props> = ({ items, filterAttributes }) => {
+	const locationId = Object.keys(items)[0];
+	const stations = items[locationId];
+	const { colors } = useTheme();
+
+	const sections = useMemo(() => {
+		return Object.entries(stations).map(([stationName, foodItems]) => ({
+			title: stationName,
+			data: foodItems,
+		}));
+	}, [stations]);
+
 	return (
-		<>
-			{Object.entries(items.menu).map(([locationId, stations]: [string, Record<string, FoodItemType[]>]) => (
-				<View key={locationId}>
-					<FoodListHeader locationId={locationId} />
-					{Object.entries(stations).map(([stationName, foodItems]: [string, FoodItemType[]]) => (
-						<List.Section key={stationName} title={stationName}>
-							{foodItems.map((food: FoodItemType, index: number) => (
-								<FoodListItem key={`${stationName}-${index}`} foodItem={food} filterAttributes={filterAttributes} />
-							))}
-						</List.Section>
-					))}
-				</View>
-			))}
-		</>
+		<SectionList
+			scrollEventThrottle={16}
+			windowSize={10}
+			sections={sections}
+			ListHeaderComponent={<FoodListHeader locationId={locationId} />}
+			renderSectionHeader={({ section }) => (
+				<Text variant="bodyMedium" style={[styles.sectionTitle, { color: colors.onSurfaceVariant }]}>
+					{section.title}
+				</Text>
+			)}
+			renderItem={({ item }) => <FoodListItem foodItem={item} filterAttributes={filterAttributes} />}
+		/>
 	);
 };
+
+const styles = StyleSheet.create({
+	sectionTitle: {
+		paddingHorizontal: 16,
+		paddingVertical: 8,
+	},
+	emptyContainer: {
+		padding: 16,
+		alignItems: "center",
+	},
+});

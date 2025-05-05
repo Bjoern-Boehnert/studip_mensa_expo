@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, IconButton, Text, useTheme } from "react-native-paper";
 import { addDays, format, subDays } from "date-fns";
@@ -9,9 +9,10 @@ import { DatePickerModal } from "react-native-paper-dates";
 interface Props {
 	initialDate: Date;
 	onChange: (date: Date) => void;
+	handleSwitch: () => void;
 }
 
-export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
+export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange, handleSwitch }) => {
 	const { colors } = useTheme();
 	const [date, setDate] = useState(initialDate);
 	const [visible, setVisible] = useState(false);
@@ -21,28 +22,30 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
 		onChange(debouncedDate);
 	}, [debouncedDate, onChange]);
 
-	const formattedDate = format(date, "EEE, dd.MM.yyyy", { locale: de });
+	const formattedDate = useMemo(() => format(date, "EEE, dd.MM.yyyy", { locale: de }), [date]);
+	const isPrevDisabled = date <= initialDate;
 
-	const onPrev = () => setDate((prev) => subDays(prev, 1));
-	const onNext = () => setDate((prev) => addDays(prev, 1));
-
-	const showDatePicker = () => setVisible(true);
-	const hideDatePicker = () => setVisible(false);
-
-	const handleDateChange = (newDate: Date) => {
-		setDate(newDate);
-		hideDatePicker();
-	};
+	const onPrev = useCallback(() => setDate((prev) => subDays(prev, 1)), []);
+	const onNext = useCallback(() => setDate((prev) => addDays(prev, 1)), []);
+	const showDatePicker = useCallback(() => setVisible(true), []);
+	const hideDatePicker = useCallback(() => setVisible(false), []);
+	const handleDateChange = useCallback(
+		(newDate: Date) => {
+			setDate(newDate);
+			hideDatePicker();
+		},
+		[hideDatePicker],
+	);
 
 	return (
 		<View style={[styles.outerContainer, { borderColor: colors.outline }]}>
+			<IconButton icon="swap-horizontal" size={28} onPress={handleSwitch} />
 			<Card mode="outlined" style={[styles.card, { borderColor: colors.outline }]}>
-				<View style={styles.container}>
+				<View style={styles.innerRow}>
 					<Text variant="titleSmall" style={[styles.date, { color: colors.primary }]} onPress={showDatePicker}>
 						{formattedDate}
 					</Text>
-
-					<IconButton icon="chevron-left" size={28} onPress={onPrev} />
+					<IconButton icon="chevron-left" size={28} onPress={onPrev} disabled={isPrevDisabled} />
 					<IconButton icon="chevron-right" size={28} onPress={onNext} />
 				</View>
 			</Card>
@@ -57,24 +60,31 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange }) => {
 				onDismiss={hideDatePicker}
 				onConfirm={({ date: newDate }) => handleDateChange(newDate as Date)}
 				locale="de"
+				validRange={{
+					startDate: initialDate,
+				}}
 			/>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	outerContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 8,
+		borderTopWidth: 2,
+	},
 	card: {
-		marginHorizontal: 48,
-		marginVertical: 12,
+		flex: 1,
+		marginHorizontal: 8,
 		borderRadius: 12,
 	},
-	container: {
+	innerRow: {
 		flexDirection: "row",
 		alignItems: "center",
 		paddingHorizontal: 12,
-	},
-	outerContainer: {
-		borderTopWidth: 2,
 	},
 	date: {
 		flex: 1,

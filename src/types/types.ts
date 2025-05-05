@@ -40,6 +40,13 @@ export type MenuResponse = {
 		| false;
 };
 
+export type Menu = {
+	[locationId: string]: {
+		[stationName: string]: FoodItem[];
+	};
+};
+
+
 export type Attribute = {
 	id: string;
 	label: string;

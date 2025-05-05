@@ -1,5 +1,4 @@
 import React, { Suspense, useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
 import { FoodList } from "@/src/components/mensa/list/item/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
@@ -15,19 +14,16 @@ const normalizeDate = (input: Date) => {
 	return date;
 };
 
-const MenuContent = ({ date }: { date: Date }) => {
+const MenuContent = ({ date, locationId }: { date: Date; locationId: string }) => {
 	const { attributes, reload: reloadAttributes } = useStoredAttributes();
 
 	useFocusEffect(() => {
 		void reloadAttributes();
 	});
+
 	const { data: items } = useMenu(date);
-	if (items && items.menu !== false) {
-		return (
-			<ScrollView contentContainerStyle={styles.container}>
-				<FoodList items={items} filterAttributes={attributes} />
-			</ScrollView>
-		);
+	if (items && items.menu !== false && items.menu[locationId] !== null) {
+		return <FoodList items={{ [locationId]: items.menu[locationId] }} filterAttributes={attributes} />;
 	}
 
 	return <InfoMessage text="Kein Menü verfügbar" />;
@@ -35,22 +31,22 @@ const MenuContent = ({ date }: { date: Date }) => {
 
 export default function Index() {
 	const [rawDate, setRawDate] = useState(new Date());
+	const initialDate = normalizeDate(new Date());
 	const date = normalizeDate(rawDate);
+	const [locationId, setLocationId] = useState("2");
+
+	const toggleMenu = () => {
+		setLocationId(locationId === "2" ? "3" : "2");
+	};
 
 	return (
 		<>
 			<ErrorBoundaryWrapper key={date.toISOString()}>
 				<Suspense fallback={<LoadingSpinner />}>
-					<MenuContent date={date} />
+					<MenuContent date={date} locationId={locationId} />
 				</Suspense>
 			</ErrorBoundaryWrapper>
-			<BottomDateBar initialDate={date} onChange={setRawDate} />
+			<BottomDateBar initialDate={initialDate} onChange={setRawDate} handleSwitch={toggleMenu} />
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flexGrow: 1,
-	},
-});
