@@ -1,5 +1,12 @@
-import { AttributesResponse, LectureResponse, MenuResponse, UserResponse } from "../../types/types";
-import { fetchAPI } from "./apiClient";
+import {
+	AttributesResponse,
+	CourseResponse,
+	FolderResponse,
+	LectureResponse,
+	MenuResponse,
+	UserResponse,
+} from "../../types/types";
+import { downloadAPI, fetchAPI } from "./apiClient";
 
 export const getMenu = (token: string, date: Date): Promise<MenuResponse | null> => {
 	const epochTime = Math.floor(date.getTime() / 1000.0);
@@ -17,3 +24,18 @@ export const getUser = (token: string): Promise<UserResponse | null> => {
 export const getLectures = (token: string, userId: string): Promise<LectureResponse | null> => {
 	return fetchAPI<LectureResponse>(`user/${userId}/events`, token);
 };
+
+export const getLectureInfo = (token: string, courseId: string): Promise<CourseResponse | null> => {
+	return fetchAPI<CourseResponse>(`course/${courseId}`, token);
+};
+export const getLectureFolder = (token: string, courseId: string): Promise<FolderResponse | null> => {
+	return fetchAPI<FolderResponse>(`course/${courseId}/top_folder`, token);
+};
+export const getFolder = (token: string, folderId: string): Promise<FolderResponse | null> => {
+	return fetchAPI<FolderResponse>(`folder/${folderId}`, token);
+};
+
+export const downloadFile = (token: string, fileId: string): Promise<ArrayBuffer> => {
+	return downloadAPI(`file/${fileId}/download`, token);
+};
+

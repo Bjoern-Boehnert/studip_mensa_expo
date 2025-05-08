@@ -23,20 +23,21 @@ export default function RootLayout(): ReactNode {
 	return (
 		<Stack
 			screenOptions={{
+				headerStyle: {
+					backgroundColor: colors.primaryContainer,
+				},
 				headerShown: false,
+				animation: "none",
 			}}
 		>
-			<Stack.Screen name="(tabs)" />
 			<Stack.Screen
 				name="AttributeFilterSettings"
 				options={{
 					title: "Filter Einstellungen",
 					headerShown: true,
-					headerStyle: {
-						backgroundColor: colors.primaryContainer,
-					},
 				}}
 			/>
+			<Stack.Screen name="course" />
 		</Stack>
 	);
 }

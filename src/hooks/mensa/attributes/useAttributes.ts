@@ -7,7 +7,7 @@ export function useAttributes() {
 	const { token } = useAuthenticatedSession();
 
 	return useSuspenseQuery<AttributesResponse | null>({
-		queryKey: ["attributes", token],
+		queryKey: ["mensa/attributes"],
 		queryFn: async () => {
 			// return await getAttributes(token);
 			return attributesData;

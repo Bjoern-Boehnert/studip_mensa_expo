@@ -8,7 +8,7 @@ export function useLectures() {
 	const { token, user } = useAuthenticatedSession();
 
 	return useSuspenseQuery<LectureResponse | null>({
-		queryKey: ["events", user.id, token],
+		queryKey: [`user/${user.id}/events`],
 		queryFn: async () => {
 			return await getLectures(token, user.id);
 			// return lectures;

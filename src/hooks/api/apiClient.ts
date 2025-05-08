@@ -20,3 +20,17 @@ export const fetchAPI = async <T>(url: string, token: string): Promise<T | null>
 	}
 	throw new Error("Serverantwort konnte nicht verarbeitet werden.");
 };
+
+export const downloadAPI = async (url: string, token: string): Promise<ArrayBuffer> => {
+	const response = await fetch(`${BASEURL}/${url}`, {
+		headers: {
+			Authorization: `Basic ${token}`,
+		},
+		credentials: "omit",
+	});
+
+	if (!response.ok) {
+		throw new Error(`Serverantwort: ${response.status}`);
+	}
+	return await response.arrayBuffer();
+};

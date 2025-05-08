@@ -14,7 +14,7 @@ const normalizeDate = (input: Date) => {
 	return date;
 };
 
-const MenuContent = ({ date, locationId }: { date: Date; locationId: string }) => {
+const Content = ({ date, locationId }: { date: Date; locationId: string }) => {
 	const { attributes, reload: reloadAttributes } = useStoredAttributes();
 
 	useFocusEffect(() => {
@@ -43,7 +43,7 @@ export default function Index() {
 		<>
 			<ErrorBoundaryWrapper key={date.toISOString()}>
 				<Suspense fallback={<LoadingSpinner />}>
-					<MenuContent date={date} locationId={locationId} />
+					<Content date={date} locationId={locationId} />
 				</Suspense>
 			</ErrorBoundaryWrapper>
 			<BottomDateBar initialDate={initialDate} onChange={setRawDate} handleSwitch={toggleMenu} />

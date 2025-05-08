@@ -7,6 +7,7 @@ import { formatDate, getEuropeDate } from "@/src/utils/time";
 
 type Props = {
 	items: LectureEvent[];
+	onContinue: (courseRoute: string) => void;
 };
 
 type Section = {
@@ -29,12 +30,10 @@ const groupEventsByDate = (events: LectureEvent[]): Section[] => {
 			title: formatDate(new Date(date), "EEEE, dd. MMMM yyyy"),
 			data: events.sort((a, b) => a.start - b.start),
 		}))
-		.sort((a, b) =>
-			new Date(a.title).getTime() - new Date(b.title).getTime()
-		);
+		.sort((a, b) => new Date(a.title).getTime() - new Date(b.title).getTime());
 };
 
-export const LecturePlan: React.FC<Props> = ({ items }) => {
+export const LecturePlan: React.FC<Props> = ({ items, onContinue }) => {
 	const theme = useTheme();
 	const sections = useMemo(() => groupEventsByDate(items), [items]);
 
@@ -42,7 +41,9 @@ export const LecturePlan: React.FC<Props> = ({ items }) => {
 		<SectionList
 			sections={sections}
 			keyExtractor={(item) => item.event_id}
-			renderItem={({ item }) => <LectureEventCard event={item} />}
+			renderItem={({ item }) => (
+				<LectureEventCard event={item} onContinue={onContinue} />
+			)}
 			renderSectionHeader={({ section: { title } }) => (
 				<View style={styles.dateGroup}>
 					<Text variant="bodyMedium" style={styles.dateText}>
@@ -50,10 +51,7 @@ export const LecturePlan: React.FC<Props> = ({ items }) => {
 					</Text>
 				</View>
 			)}
-			contentContainerStyle={[
-				styles.container,
-				{ backgroundColor: theme.colors.background },
-			]}
+			contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}
 		/>
 	);
 };

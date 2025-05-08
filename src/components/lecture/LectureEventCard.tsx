@@ -2,18 +2,18 @@ import React from "react";
 import { Card, IconButton, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { LectureEvent } from "../../types/types";
-import { format } from "date-fns";
-import { getEuropeDate } from "@/src/utils/time";
+import { formatDate, getEuropeDate } from "@/src/utils/time";
 
 type Props = {
 	event: LectureEvent;
+	onContinue: (courseRoute: string) => void;
 };
 
 const getTime = (unix: number) => {
-	return format(getEuropeDate(unix), "HH:mm");
+	return formatDate(getEuropeDate(unix), "HH:mm");
 };
 
-export const LectureEventCard: React.FC<Props> = ({ event }) => {
+export const LectureEventCard: React.FC<Props> = ({ event, onContinue }) => {
 	const theme = useTheme();
 	const start = getTime(event.start);
 	const end = getTime(event.end);
@@ -23,7 +23,7 @@ export const LectureEventCard: React.FC<Props> = ({ event }) => {
 			<Card.Title
 				titleNumberOfLines={2}
 				title={event.title}
-				right={(props) => <IconButton {...props} icon="arrow-right" onPress={() => {}} />}
+				right={(props) => <IconButton {...props} icon="arrow-right" onPress={()=>onContinue(event.course)} />}
 			/>
 			<Card.Content>
 				<View style={styles.row}>

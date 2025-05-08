@@ -8,7 +8,7 @@ export function useMenu(date: Date) {
 
 	const dateString = date.toISOString().split("T")[0];
 	return useSuspenseQuery<MenuResponse | null>({
-		queryKey: ["menu", token, dateString],
+		queryKey: [`mensa/${dateString}`],
 		queryFn: queryFn,
 		staleTime: 10 * 60 * 1000,
 	});
