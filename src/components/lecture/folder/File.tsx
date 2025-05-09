@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Icon, IconButton, Text, useTheme } from "react-native-paper";
+import { Icon, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { File as FileType } from "../../../types/types";
 import { formatDate, getEuropeDate } from "@/src/utils/time";
@@ -19,8 +19,7 @@ const getFileIcon = (mimeType: string) => {
 
 export const File: FC<{
 	file: FileType;
-	onDownloadFile: (id: string, name: string, mimetype: string) => void;
-}> = ({ file, onDownloadFile }) => {
+}> = ({ file }) => {
 	const { colors } = useTheme();
 
 	return (
@@ -30,14 +29,6 @@ export const File: FC<{
 				<Text variant="bodyMedium" style={[styles.name, { color: colors.onSurface }]} numberOfLines={2}>
 					{file.name}
 				</Text>
-				<IconButton
-					icon="download"
-					size={20}
-					onPress={() => onDownloadFile(file.id, file.name, file.mime_type)}
-					iconColor={colors.primary}
-					accessibilityLabel="Download file"
-					disabled={!file.is_downloadable}
-				/>
 			</View>
 			<View style={styles.row}>
 				<Text variant="bodySmall">Geändert am: {formatDate(getEuropeDate(file.chdate), "dd.MM.yyyy HH:mm")}</Text>

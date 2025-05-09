@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Divider, Text } from "react-native-paper";
+import { Avatar, Button, Card, Divider, Text, useTheme } from "react-native-paper";
 import React, { Suspense } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
@@ -36,9 +36,6 @@ const Content = () => {
 					<Divider style={styles.divider} />
 				</Card.Content>
 				<Card.Actions>
-					<Button mode="contained" icon="forum" disabled={true}>
-						Forum
-					</Button>
 					<Button mode="contained" icon="folder" onPress={() => navigateCourseFolders(course.course_id)}>
 						Dokumente
 					</Button>
@@ -81,5 +78,26 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		gap: 10,
 		margin: 8,
+	},
+	colorgroup: {
+		width: 50,
+		height: 50,
+		margin: 10
+	},
+	titleGradient: {
+		padding: 16,
+		borderTopLeftRadius: 12,
+		borderTopRightRadius: 12,
+	},
+	titleContent: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	rightAccessory: {
+		width: 32,
+		height: 32,
+		borderRadius: 16,
+		backgroundColor: "#fff", // or your icon/avatar/etc
 	},
 });
