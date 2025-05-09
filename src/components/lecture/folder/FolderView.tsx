@@ -11,7 +11,7 @@ interface FolderExplorerProps {
 }
 
 export const FolderView: FC<FolderExplorerProps> = ({ rootFolder, onDownloadFile }) => {
-	const [path, setPath] = useState([{ id: rootFolder.id, name: rootFolder.name }]);
+	const [path, setPath] = useState([{ id: rootFolder.id, name: rootFolder.name || "/" }]);
 	const { data: folder } = useFolder(path.at(-1)!.id);
 
 	const navigateTo = (id: string, name: string) => setPath((prev) => [...prev, { id, name }]);

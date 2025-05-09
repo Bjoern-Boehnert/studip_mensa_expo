@@ -18,14 +18,14 @@ export default function RootLayout(): ReactNode {
 			<Stack.Screen
 				name="topfolder"
 				options={{
-					title: "Root Ordner",
+					title: "Dokumente",
 					headerShown: true,
 				}}
 			/>
 			<Stack.Screen
 				name="index"
 				options={{
-					title: "Course",
+					title: "Modul",
 					headerShown: true,
 				}}
 			/>

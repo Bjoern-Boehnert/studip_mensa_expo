@@ -23,7 +23,7 @@ const Content = () => {
 			<Card style={styles.card}>
 				<Card.Title title={course.title} subtitle={course.number} />
 				<Card.Content>
-					{course.subtitle ? <Text variant="titleMedium">{course.subtitle}</Text> : null}
+					{course.subtitle ? <Text variant="titleSmall">{course.subtitle}</Text> : null}
 					<Text style={styles.sectionTitle}>Dozent(en):</Text>
 					{Object.values(course.lecturers).map((lecturer) => {
 						return (
@@ -33,10 +33,12 @@ const Content = () => {
 							</View>
 						);
 					})}
-
 					<Divider style={styles.divider} />
 				</Card.Content>
 				<Card.Actions>
+					<Button mode="contained" icon="forum" disabled={true}>
+						Forum
+					</Button>
 					<Button mode="contained" icon="folder" onPress={() => navigateCourseFolders(course.course_id)}>
 						Dokumente
 					</Button>
