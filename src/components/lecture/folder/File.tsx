@@ -3,6 +3,7 @@ import { Icon, IconButton, Text, useTheme } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { File as FileType } from "../../../types/types";
 import { formatDate, getEuropeDate } from "@/src/utils/time";
+import { formatFileSize } from "@/src/utils/parse";
 
 const getFileIcon = (mimeType: string) => {
 	if (mimeType.includes("pdf")) {
@@ -41,6 +42,9 @@ export const File: FC<{
 			<View style={styles.row}>
 				<Text variant="bodySmall">Geändert am: {formatDate(getEuropeDate(file.chdate), "dd.MM.yyyy HH:mm")}</Text>
 			</View>
+			<View style={styles.row}>
+				<Text variant="bodySmall">Größe: {formatFileSize(file.size)}</Text>
+			</View>
 		</View>
 	);
 };
@@ -52,12 +56,12 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: "row",
-		alignItems: "center", // Vertikal zentrieren
+		alignItems: "center",
 		gap: 8,
 	},
 	name: {
-		flexShrink: 1, // Name umbricht bei Bedarf
-		flexGrow: 1, // Nimmt den verbleibenden Platz ein
-		paddingRight: 8, // Abstand zum Button
+		flexShrink: 1,
+		flexGrow: 1,
+		paddingRight: 8,
 	},
 });
