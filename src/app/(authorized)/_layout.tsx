@@ -37,7 +37,6 @@ export default function RootLayout(): ReactNode {
 					headerShown: true,
 				}}
 			/>
-			<Stack.Screen name="course" />
 		</Stack>
 	);
 }

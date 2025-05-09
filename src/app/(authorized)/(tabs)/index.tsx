@@ -41,7 +41,7 @@ export default function Index() {
 
 	return (
 		<>
-			<ErrorBoundaryWrapper key={date.toISOString()}>
+			<ErrorBoundaryWrapper>
 				<Suspense fallback={<LoadingSpinner />}>
 					<Content date={date} locationId={locationId} />
 				</Suspense>
