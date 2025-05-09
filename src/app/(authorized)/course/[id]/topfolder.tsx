@@ -4,25 +4,16 @@ import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { useLocalSearchParams } from "expo-router";
 import { InfoMessage } from "@/src/components/InfoMessage";
-import { useLectureFolder } from "@/src/hooks/lecture/useLectureFolder";
+import { useLectureModules } from "@/src/hooks/lecture/useLectureModules";
 import { FolderView } from "@/src/components/lecture/folder/FolderView";
 import { useAuthenticatedSession } from "@/src/hooks/auth/useAuthenticatedSession";
 import * as FileSystem from "expo-file-system";
 import * as API from "@/src/hooks/api/api";
-
-function arrayBufferToBase64(buffer: ArrayBuffer) {
-	let binary = "";
-	const bytes = new Uint8Array(buffer);
-	const len = bytes.byteLength;
-	for (let i = 0; i < len; i++) {
-		binary += String.fromCharCode(bytes[i]);
-	}
-	return window.btoa(binary);
-}
+import { arrayBufferToBase64 } from "@/src/utils/parse";
 
 const Content = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const { data: folder } = useLectureFolder(id);
+	const { data: folder } = useLectureModules(id, "top_folder");
 	const { token } = useAuthenticatedSession();
 
 	const downloadFile = async (id: string, fileName: string, mimeType: string) => {
@@ -45,7 +36,6 @@ const Content = () => {
 			await FileSystem.writeAsStringAsync(fileUri, base64Data, {
 				encoding: FileSystem.EncodingType.Base64,
 			});
-
 		} catch (error) {
 			Alert.alert("Fehler", "Beim Speichern der Datei ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.");
 		}

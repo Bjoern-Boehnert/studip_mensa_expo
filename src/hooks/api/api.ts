@@ -28,9 +28,17 @@ export const getLectures = (token: string, userId: string): Promise<LectureRespo
 export const getLectureInfo = (token: string, courseId: string): Promise<CourseResponse | null> => {
 	return fetchAPI<CourseResponse>(`course/${courseId}`, token);
 };
-export const getLectureFolder = (token: string, courseId: string): Promise<FolderResponse | null> => {
+export const getLectureTopFolder = (token: string, courseId: string): Promise<FolderResponse | null> => {
 	return fetchAPI<FolderResponse>(`course/${courseId}/top_folder`, token);
 };
+export const getLectureForumCategories = (token: string, courseId: string): Promise<any | null> => {
+	return fetchAPI<any>(`course/${courseId}/forum_categories`, token);
+};
+
+export const getLectureWiki = (token: string, courseId: string): Promise<any | null> => {
+	return fetchAPI<any>(`course/${courseId}/wiki`, token);
+};
+
 export const getFolder = (token: string, folderId: string): Promise<FolderResponse | null> => {
 	return fetchAPI<FolderResponse>(`folder/${folderId}`, token);
 };
@@ -38,4 +46,3 @@ export const getFolder = (token: string, folderId: string): Promise<FolderRespon
 export const downloadFile = (token: string, fileId: string): Promise<ArrayBuffer> => {
 	return downloadAPI(`file/${fileId}/download`, token);
 };
-
