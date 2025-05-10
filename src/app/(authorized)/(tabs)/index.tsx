@@ -3,7 +3,7 @@ import { FoodList } from "@/src/components/mensa/list/item/FoodList";
 import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
 import { useMenu } from "@/src/hooks/mensa/useMenu";
-import { useFocusEffect } from "@react-navigation/native";
+import {  useFocusEffect } from "expo-router";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { InfoMessage } from "@/src/components/InfoMessage";
 import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
