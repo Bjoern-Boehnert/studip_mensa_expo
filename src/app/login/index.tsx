@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Linking, View } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import { Button, IconButton, Text, TextInput, useTheme } from "react-native-paper";
 import { useLogin } from "@/src/hooks/auth/useLogin";
 
 export default function Login(): ReactNode {
@@ -56,12 +56,14 @@ export default function Login(): ReactNode {
 			/>
 
 			{isError && (
-				<Text variant="bodyMedium" style={{ color: colors.error }}>{error.message}</Text>
+				<Text variant="bodyMedium" style={{ color: colors.error }}>
+					{error.message}
+				</Text>
 			)}
 
 			<Button
 				mode="contained"
-				onPress={()=>login({username, password})}
+				onPress={() => login({ username, password })}
 				style={{ width: "100%", borderRadius: 0, marginTop: 16 }}
 				loading={isPending}
 				disabled={isPending}
@@ -77,15 +79,18 @@ export default function Login(): ReactNode {
 				}}
 			>
 				Login funktioniert nur mit einem Stud.IP-Account der Uni Oldenburg (
-				<Text
-					style={{ color: colors.primary }}
-					onPress={() => Linking.openURL('https://elearning.uni-oldenburg.de')}
-				>
+				<Text style={{ color: colors.primary }} onPress={() => Linking.openURL("https://elearning.uni-oldenburg.de")}>
 					elearning.uni-oldenburg.de
 				</Text>
 				)
 			</Text>
-
+			<View>
+				<IconButton
+					icon="github"
+					onPress={()=>Linking.openURL("https://github.com/Bjoern-Boehnert/studip_mensa_expo")}
+					style={{ width: "100%", borderRadius: 0, marginTop: 16 }}
+				/>
+			</View>
 		</View>
 	);
 }

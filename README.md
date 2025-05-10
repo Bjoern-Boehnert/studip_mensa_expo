@@ -9,6 +9,7 @@ Eine Expo App für den Abruf der Mensa-Daten der Uni Oldenburg über StudIP(http
 - Einfache Navigation der Tage
 - Filterung von Attributen der Speisen
 - Liste von anstehenden Terminen.
+- Anzeige von Kursinformation und Dokumentenliste
 - Abmeldung und Löschung des Login Tokens
 
 ## Todo
