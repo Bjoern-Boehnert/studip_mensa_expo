@@ -1,12 +1,14 @@
 import React, { Suspense, useState } from "react";
 import { FoodList } from "@/src/components/mensa/list/item/FoodList";
-import { BottomDateBar } from "@/src/components/mensa/list/BottomDateBar";
 import { useStoredAttributes } from "@/src/hooks/mensa/attributes/useStoredAttributes";
 import { useMenu } from "@/src/hooks/mensa/useMenu";
-import {  useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { LoadingSpinner } from "@/src/components/LoadingSpinner";
 import { InfoMessage } from "@/src/components/InfoMessage";
 import { ErrorBoundaryWrapper } from "@/src/components/ErrorBoundaryWrapper";
+import { IconButton, useTheme } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { DateBar } from "@/src/components/DateBar";
 
 const normalizeDate = (input: Date) => {
 	const date = new Date(input);
@@ -30,6 +32,7 @@ const Content = ({ date, locationId }: { date: Date; locationId: string }) => {
 };
 
 export default function Index() {
+	const { colors } = useTheme();
 	const [rawDate, setRawDate] = useState(new Date());
 	const initialDate = normalizeDate(new Date());
 	const date = normalizeDate(rawDate);
@@ -46,7 +49,24 @@ export default function Index() {
 					<Content date={date} locationId={locationId} />
 				</Suspense>
 			</ErrorBoundaryWrapper>
-			<BottomDateBar initialDate={initialDate} onChange={setRawDate} handleSwitch={toggleMenu} />
+			<View style={[styles.outerContainer, { borderColor: colors.outline }]}>
+				<IconButton icon="swap-horizontal" size={28} onPress={toggleMenu} />
+				<DateBar
+					initialDate={initialDate}
+					onChange={setRawDate}
+					enableDatePicker={true}
+				/>
+			</View>
 		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	outerContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 8,
+		borderTopWidth: 2,
+	},
+});

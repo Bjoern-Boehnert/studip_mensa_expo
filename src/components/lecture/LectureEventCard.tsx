@@ -1,66 +1,60 @@
 import React from "react";
-import { Card, IconButton, Text, useTheme } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { Card, Divider, IconButton, Text, useTheme } from "react-native-paper";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { LectureEvent } from "../../types/types";
 import { formatDate, getEuropeDate } from "@/src/utils/time";
 
 type Props = {
 	event: LectureEvent;
 	onContinue: (courseRoute: string) => void;
+	style?: StyleProp<ViewStyle>;
 };
 
 const getTime = (unix: number) => {
 	return formatDate(getEuropeDate(unix), "HH:mm");
 };
 
-export const LectureEventCard: React.FC<Props> = ({ event, onContinue }) => {
+export const LectureEventCard: React.FC<Props> = ({ event, onContinue, style }) => {
 	const theme = useTheme();
 	const start = getTime(event.start);
 	const end = getTime(event.end);
 
 	return (
-		<Card style={[styles.card, { backgroundColor: theme.colors.elevation.level1 }]}>
-			<Card.Title
-				titleNumberOfLines={2}
-				title={event.title}
-				right={(props) => <IconButton {...props} icon="arrow-right" onPress={()=>onContinue(event.course)} />}
-			/>
+		<Card style={[style, { backgroundColor: theme.colors.elevation.level1 }]} >
 			<Card.Content>
+				<Text style={[styles.title,{color: theme.colors.primary}]} variant="bodyMedium" numberOfLines={2} onPress={() => onContinue(event.course)}>
+					{event.title}
+				</Text>
 				<View style={styles.row}>
-					<Text variant="bodyLarge">
+					<Text variant="bodyMedium">
 						{start} – {end}
 					</Text>
-					<Text variant="bodyLarge">{event.room}</Text>
+					<Text variant="bodyMedium">{event.room}</Text>
 				</View>
 
-				<Text variant="bodySmall" style={styles.title}>
-					{event.categories}
-				</Text>
-
 				{event.description && <Text variant="bodySmall">{event.description}</Text>}
-
 				{event.canceled && (
-					<Text variant="bodyMedium" style={[styles.canceledText, { color: theme.colors.onErrorContainer }]}>
+					<Text variant="bodyMedium" style={[{ color: theme.colors.onErrorContainer }]}>
 						Abgesagt
 					</Text>
 				)}
 			</Card.Content>
+
 		</Card>
 	);
 };
 
 const styles = StyleSheet.create({
-	card: {
-		marginBottom: 12,
-	},
-	title: {
-		marginBottom: 4,
-	},
 	row: {
 		flexDirection: "row",
 		justifyContent: "space-between",
+		paddingVertical: 8,
 	},
-	canceledText: {
-		marginTop: 4,
+	title: {
+		overflow: "hidden",
+		textOverflow: "ellipsis",
+	},
+	divider: {
+		marginVertical: 5,
 	},
 });

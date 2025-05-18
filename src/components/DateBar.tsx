@@ -3,16 +3,23 @@ import { StyleSheet, View } from "react-native";
 import { Card, IconButton, Text, useTheme } from "react-native-paper";
 import { addDays, format, subDays } from "date-fns";
 import { de } from "date-fns/locale";
-import { useDebounce } from "@/src/hooks/useDebounce";
+import { useDebounce } from "../hooks/useDebounce";
 import { DatePickerModal } from "react-native-paper-dates";
+
+type ValidRange = {
+	startDate?: Date;
+	endDate?: Date;
+	disabledDates?: Date[];
+};
 
 interface Props {
 	initialDate: Date;
 	onChange: (date: Date) => void;
-	handleSwitch: () => void;
+	validRange?: ValidRange;
+	enableDatePicker?: boolean;
 }
 
-export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange, handleSwitch }) => {
+export const DateBar: React.FC<Props> = ({ initialDate, onChange, enableDatePicker, validRange }) => {
 	const { colors } = useTheme();
 	const [date, setDate] = useState(initialDate);
 	const [visible, setVisible] = useState(false);
@@ -23,10 +30,11 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange, handleSw
 	}, [debouncedDate, onChange]);
 
 	const formattedDate = useMemo(() => format(date, "EEE, dd.MM.yyyy", { locale: de }), [date]);
-	const isPrevDisabled = date <= initialDate;
+	const isPrevDisabled = validRange && validRange.startDate ? date <= validRange.startDate : date <= initialDate;
+	const isNextDisabled = validRange && validRange.endDate ? date >= validRange.endDate : false;
 
-	const onPrev = useCallback(() => setDate((prev) => subDays(prev, 1)), []);
-	const onNext = useCallback(() => setDate((prev) => addDays(prev, 1)), []);
+	const onLeft = useCallback(() => setDate((date) => subDays(date, 1)), []);
+	const onRight = useCallback(() => setDate((date) => addDays(date, 1)), []);
 	const showDatePicker = useCallback(() => setVisible(true), []);
 	const hideDatePicker = useCallback(() => setVisible(false), []);
 	const handleDateChange = useCallback(
@@ -38,33 +46,36 @@ export const BottomDateBar: React.FC<Props> = ({ initialDate, onChange, handleSw
 	);
 
 	return (
-		<View style={[styles.outerContainer, { borderColor: colors.outline }]}>
-			<IconButton icon="swap-horizontal" size={28} onPress={handleSwitch} />
+		<>
 			<Card mode="outlined" style={[styles.card, { borderColor: colors.outline }]}>
 				<View style={styles.innerRow}>
-					<Text variant="titleSmall" style={[styles.date, { color: colors.primary }]} onPress={showDatePicker}>
+					<Text
+						variant="titleSmall"
+						style={[styles.date, { color: enableDatePicker ? colors.primary : colors.onBackground }]}
+						onPress={enableDatePicker ? showDatePicker : undefined}
+					>
 						{formattedDate}
 					</Text>
-					<IconButton icon="chevron-left" size={28} onPress={onPrev} disabled={isPrevDisabled} />
-					<IconButton icon="chevron-right" size={28} onPress={onNext} />
+					<IconButton icon="chevron-left" size={28} onPress={onLeft} disabled={isPrevDisabled} />
+					<IconButton icon="chevron-right" size={28} onPress={onRight} disabled={isNextDisabled} />
 				</View>
 			</Card>
-			<DatePickerModal
-				saveLabel="Speichern"
-				allowEditing={false}
-				label="Auswahl"
-				disableWeekDays={[0, 6]}
-				mode="single"
-				visible={visible}
-				date={date}
-				onDismiss={hideDatePicker}
-				onConfirm={({ date: newDate }) => handleDateChange(newDate as Date)}
-				locale="de"
-				validRange={{
-					startDate: initialDate,
-				}}
-			/>
-		</View>
+			{enableDatePicker && (
+				<DatePickerModal
+					saveLabel="Speichern"
+					allowEditing={false}
+					label="Auswahl"
+					disableWeekDays={[0, 6]}
+					mode="single"
+					visible={visible}
+					date={date}
+					onDismiss={hideDatePicker}
+					onConfirm={({ date: newDate }) => handleDateChange(newDate as Date)}
+					locale="de"
+					validRange={{ ...validRange }}
+				/>
+			)}
+		</>
 	);
 };
 
