@@ -1,5 +1,5 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Card, Text, useTheme } from "react-native-paper";
 
 function getMensaName(locationId: string): { title: string; info: string } {
 	switch (locationId) {
@@ -20,29 +20,18 @@ export const FoodListHeader = ({ locationId }: { locationId: string }) => {
 	const mensa = getMensaName(locationId);
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.primary }]}>
-			<Text
-				variant="titleMedium"
-				style={[styles.title, { color: colors.onPrimary }]}
-			>
-				{mensa.title}
-			</Text>
-			<Text
-				variant="bodySmall"
-				style={{ color: colors.onPrimary }}
-			>
-				{mensa.info}
-			</Text>
-		</View>
+		<Card style={[styles.container, { backgroundColor: colors.inversePrimary }]}>
+			<Card.Title title={mensa.title} />
+			<Card.Content>
+				<Text>{mensa.info}</Text>
+			</Card.Content>
+		</Card>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 12,
-		marginBottom: 16,
+		margin: 12,
 	},
-	title: {
-		marginBottom: 4,
-	},
+	title: {},
 });

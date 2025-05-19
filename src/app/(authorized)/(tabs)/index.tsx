@@ -50,12 +50,8 @@ export default function Index() {
 				</Suspense>
 			</ErrorBoundaryWrapper>
 			<View style={[styles.outerContainer, { borderColor: colors.outline }]}>
-				<IconButton icon="swap-horizontal" size={28} onPress={toggleMenu} />
-				<DateBar
-					initialDate={initialDate}
-					onChange={setRawDate}
-					enableDatePicker={true}
-				/>
+				<IconButton icon="swap-horizontal" onPress={toggleMenu} />
+				<DateBar initialDate={initialDate} onChange={setRawDate} enableDatePicker={true} />
 			</View>
 		</>
 	);

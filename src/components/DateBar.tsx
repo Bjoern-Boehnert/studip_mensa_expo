@@ -56,8 +56,8 @@ export const DateBar: React.FC<Props> = ({ initialDate, onChange, enableDatePick
 					>
 						{formattedDate}
 					</Text>
-					<IconButton icon="chevron-left" size={28} onPress={onLeft} disabled={isPrevDisabled} />
-					<IconButton icon="chevron-right" size={28} onPress={onRight} disabled={isNextDisabled} />
+					<IconButton icon="chevron-left" onPress={onLeft} disabled={isPrevDisabled} />
+					<IconButton icon="chevron-right" onPress={onRight} disabled={isNextDisabled} />
 				</View>
 			</Card>
 			{enableDatePicker && (

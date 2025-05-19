@@ -29,7 +29,7 @@ export const FoodList: React.FC<Props> = ({ items, filterAttributes }) => {
 			sections={sections}
 			ListHeaderComponent={<FoodListHeader locationId={locationId} />}
 			renderSectionHeader={({ section }) => (
-				<Text variant="bodyMedium" style={[styles.sectionTitle, { color: colors.onSurfaceVariant }]}>
+				<Text variant="titleSmall" style={[styles.sectionTitle, { color: colors.onSurfaceVariant }]}>
 					{section.title}
 				</Text>
 			)}

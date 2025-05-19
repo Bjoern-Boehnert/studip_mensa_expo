@@ -60,7 +60,7 @@ export const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
 		<ThemeModeContext.Provider value={{ mode, toggleTheme }}>
 			<PaperProvider theme={theme}>
 				<NavigationThemeProvider value={theme as any}>
-					<StatusBar style={isDark ? "light" : "dark"} />
+					<StatusBar style={isDark ? "dark" : "light"} />
 					{children}
 				</NavigationThemeProvider>
 			</PaperProvider>

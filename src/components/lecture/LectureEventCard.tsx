@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Divider, IconButton, Text, useTheme } from "react-native-paper";
+import { Card, Text, useTheme } from "react-native-paper";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { LectureEvent } from "../../types/types";
 import { formatDate, getEuropeDate } from "@/src/utils/time";
@@ -20,9 +20,14 @@ export const LectureEventCard: React.FC<Props> = ({ event, onContinue, style }) 
 	const end = getTime(event.end);
 
 	return (
-		<Card style={[style, { backgroundColor: theme.colors.elevation.level1 }]} >
+		<Card style={[style, { backgroundColor: theme.colors.elevation.level1 }]}>
 			<Card.Content>
-				<Text style={[styles.title,{color: theme.colors.primary}]} variant="bodyMedium" numberOfLines={2} onPress={() => onContinue(event.course)}>
+				<Text
+					style={[styles.title, { color: theme.colors.primary }]}
+					variant="bodyLarge"
+					numberOfLines={2}
+					onPress={() => onContinue(event.course)}
+				>
 					{event.title}
 				</Text>
 				<View style={styles.row}>
@@ -39,7 +44,6 @@ export const LectureEventCard: React.FC<Props> = ({ event, onContinue, style }) 
 					</Text>
 				)}
 			</Card.Content>
-
 		</Card>
 	);
 };
@@ -53,8 +57,5 @@ const styles = StyleSheet.create({
 	title: {
 		overflow: "hidden",
 		textOverflow: "ellipsis",
-	},
-	divider: {
-		marginVertical: 5,
 	},
 });

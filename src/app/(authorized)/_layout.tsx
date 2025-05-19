@@ -24,8 +24,9 @@ export default function RootLayout(): ReactNode {
 		<Stack
 			screenOptions={{
 				headerStyle: {
-					backgroundColor: colors.primaryContainer,
+					backgroundColor: colors.primary,
 				},
+				headerTintColor: colors.onPrimary,
 				headerShown: false,
 				animation: "none",
 			}}

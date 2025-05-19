@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
 		alignItems: "flex-start",
 	},
 	sideBar: {
-		width: 4,
+		width: 2,
 		borderRadius: 2,
 		marginVertical: 8,
-		marginLeft: 12,
+		marginLeft: 18,
 		alignSelf: "stretch",
 	},
 	content: {
