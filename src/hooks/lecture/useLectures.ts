@@ -10,8 +10,8 @@ export function useLectures() {
 	return useSuspenseQuery<LectureResponse | null>({
 		queryKey: [`user/${user.id}/events`],
 		queryFn: async () => {
-			return await getLectures(token, user.id);
-			// return lectures;
+			// return await getLectures(token, user.id);
+			return lectures;
 		},
 		staleTime: 10 * 60 * 1000,
 	});

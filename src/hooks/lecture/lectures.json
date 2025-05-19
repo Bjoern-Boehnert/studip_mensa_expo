@@ -12,6 +12,17 @@
       "canceled": false
     },
     {
+      "event_id": "11",
+      "course": "/api.php/course/2",
+      "start": 1746432000,
+      "end": 1746439200,
+      "title": "Vorlesung X.1",
+      "description": "Beschreibung der Vorlesung X.1",
+      "categories": "Sitzung",
+      "room": "A07 0-030 (Hörsaal G)",
+      "canceled": false
+    },
+    {
       "event_id": "2",
       "course": "/api.php/course/2",
       "start": 1746453600,

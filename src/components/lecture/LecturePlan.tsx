@@ -13,42 +13,43 @@ type Props = {
 
 const START_HOUR = 8;
 const END_HOUR = 20;
-const SPACING = 5;
 const HOUR_BLOCK_HEIGHT = 80;
+const SPACING = 5;
 const PIXELS_PER_MINUTE = HOUR_BLOCK_HEIGHT / 60;
 
 export const LecturePlan: React.FC<Props> = ({ items, onContinue }) => {
 	const theme = useTheme();
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
+	const formatDay = (date: number) => formatDate(getEuropeDate(date), "yyyy-MM-dd");
+
 	const uniqueDates = useMemo(() => {
-		const set = new Set(items.map((e) => formatDate(getEuropeDate(e.start), "yyyy-MM-dd")));
-		return Array.from(set).sort();
+		return Array.from(new Set(items.map(e => formatDay(e.start)))).sort();
 	}, [items]);
 
 	const selectedDate = uniqueDates[selectedIndex];
-
-	const eventsForDay = useMemo(() => {
-		return items.filter((e) => formatDate(getEuropeDate(e.start), "yyyy-MM-dd") === selectedDate);
-	}, [items, selectedDate]);
+	const eventsForDay = useMemo(
+		() => items.filter(e => formatDay(e.start) === selectedDate),
+		[items, selectedDate]
+	);
 
 	const renderHourLines = () =>
 		Array.from({ length: END_HOUR - START_HOUR + 1 }, (_, i) => (
-			<View key={i} style={[styles.hourLine, { top: i * HOUR_BLOCK_HEIGHT }]} />
+			<View key={i} style={[styles.hourLine, { top: i * HOUR_BLOCK_HEIGHT, backgroundColor: theme.colors.outline }]} />
 		));
 
 	const renderHourLabels = () =>
 		Array.from({ length: END_HOUR - START_HOUR + 1 }, (_, i) => (
-			<RNText key={i} style={[styles.hourLabel, { top: i * HOUR_BLOCK_HEIGHT - 10 }]}>
+			<RNText key={i} style={[styles.hourLabel, { top: i * HOUR_BLOCK_HEIGHT - 10, color: theme.colors.outline }]}>
 				{`${START_HOUR + i}:00`}
 			</RNText>
 		));
 
-	const renderEvents = () => {
-		return eventsForDay.map((event) => {
+	const renderEvents = () =>
+		eventsForDay.map(event => {
 			const start = getEuropeDate(event.start);
 			const end = getEuropeDate(event.end);
-			const minutesSinceStart = (start.getHours() - START_HOUR) * 60 + start.getMinutes();
+			const offset = (start.getHours() - START_HOUR) * 60 + start.getMinutes();
 			const duration = (end.getTime() - start.getTime()) / 60000;
 
 			return (
@@ -58,7 +59,7 @@ export const LecturePlan: React.FC<Props> = ({ items, onContinue }) => {
 					onContinue={onContinue}
 					style={{
 						position: "absolute",
-						top: minutesSinceStart * PIXELS_PER_MINUTE + SPACING,
+						top: offset * PIXELS_PER_MINUTE + SPACING,
 						height: duration * PIXELS_PER_MINUTE - SPACING * 2,
 						marginHorizontal: SPACING,
 						left: 0,
@@ -67,7 +68,6 @@ export const LecturePlan: React.FC<Props> = ({ items, onContinue }) => {
 				/>
 			);
 		});
-	};
 
 	return (
 		<View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -86,17 +86,17 @@ export const LecturePlan: React.FC<Props> = ({ items, onContinue }) => {
 					</View>
 				</ScrollView>
 			) : (
-				<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<View style={styles.emptyContainer}>
 					<Text variant="titleLarge" style={{ textAlign: "center" }}>
 						Keine Termine
 					</Text>
 				</View>
 			)}
 
-			<View style={[styles.outerContainer, { borderColor: theme.colors.outline }]}>
+			<View style={[styles.dateBarContainer, { borderColor: theme.colors.outline }]}>
 				<DateBar
 					initialDate={new Date(uniqueDates[0])}
-					validRange={{ endDate: new Date(uniqueDates[uniqueDates.length - 1]) }}
+					validRange={{ endDate: new Date(uniqueDates.at(-1)!) }}
 					onChange={(date) => {
 						const formatted = formatDate(date, "yyyy-MM-dd");
 						const newIndex = uniqueDates.indexOf(formatted);
@@ -113,16 +113,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 16,
 	},
-	navRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		marginBottom: 16,
-	},
-	dateText: {
-		textAlign: "center",
-		flex: 1,
-	},
 	timeColumn: {
 		width: 60,
 		position: "relative",
@@ -130,7 +120,6 @@ const styles = StyleSheet.create({
 	hourLabel: {
 		position: "absolute",
 		right: 8,
-		color: "#888",
 	},
 	eventColumn: {
 		flex: 1,
@@ -141,13 +130,17 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		height: 1,
-		backgroundColor: "#ccc",
 	},
-	outerContainer: {
+	dateBarContainer: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
 		padding: 8,
 		borderTopWidth: 2,
+	},
+	emptyContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
